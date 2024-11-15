@@ -1,0 +1,11 @@
+services:
+  app:
+    container_name: appName
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    networks:
+      - networkName
+    restart: on-failure
