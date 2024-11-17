@@ -15,11 +15,27 @@ help:
 
 .PHONY: run
 run:
-	go run ./cmd/app/main.go
+	go run ./app/cmd/main.go
 
 .PHONY: air
 air:
 	air -c .air.toml
+
+.PHONY: compose-up
+compose-up:
+ifndef file
+	docker compose up -d
+else
+	docker compose -f $(file) up -d
+endif 
+
+.PHONY: compose-down
+compose-down:
+ifndef file
+	docker compose down
+else
+	docker compose -f $(file) down 
+endif 
 
 .PHONY: test
 test:
@@ -27,22 +43,22 @@ test:
 
 .PHONY: migrate-up
 migrate-up:
-	migrate -path ./data/db/migrations -database ${DB_URL} up
+	migrate -path ./internal/infra/database/pgsql/migrations -database ${DB_URL} up
 
 .PHONY: migrate-down
 migrate-down:
-	migrate -path ./data/db/migrations -database ${DB_URL} down 
+	migrate -path ./internal/infra/database/pgsql/migrations -database ${DB_URL} down 
 
 .PHONY: migrate-force
 migrate-force:
 ifndef version 
 	$(error "Migration version not specified. Use 'make migrate-force version=<version>'")
 endif 
-	migrate -path ./data/db/migrations -database ${DB_URL} force $(version)
+	migrate -path ./internal/infra/database/pgsql/migrations -database ${DB_URL} force $(version)
 
 .PHONY: migrate-create
 migrate-create:
 ifndef name 
 	$(error "Migration name not specified. Use 'make create-migration name=<name>'")
 endif 
-	migrate create -ext sql -dir ./migrations -seq $(name)
+	migrate create -ext sql -dir ./internal/infra/database/pgsql/migrations -seq $(name)
