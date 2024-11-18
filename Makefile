@@ -8,6 +8,8 @@ help:
 	@echo "Choose a command:"
 	@echo "  make run            	- Run the Go application"
 	@echo "  make air            	- Run the Go application with live reloading"
+	@echo "  make compose-up        - Spin up docker containers"
+	@echo "  make compose-down      - Stop docker containers"
 	@echo "  make test           	- Run Go unit tests defined in ./tests"
 	@echo "  make migrate-up     	- Apply all migrations"
 	@echo "  make migrate-down   	- Rollback all migrations"
