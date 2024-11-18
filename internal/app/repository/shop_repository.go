@@ -2,6 +2,7 @@ package repository
 
 import (
 	"database/sql"
+	"time"
 
 	sq "github.com/Masterminds/squirrel"
 	"github.com/jmoiron/sqlx"
@@ -17,7 +18,7 @@ type IShopRepository interface {
 	FetchAllShops() ([]domain.Shop, error)
 	FetchShopByID(params *dto.ShopParams) (*domain.Shop, error)
 	InsertShop(shop *domain.Shop) error
-	UpdateShop(shop *domain.Shop) error
+	UpdateShop(params *dto.ShopParams, shop *domain.Shop) error
 	DeleteShop(params *dto.ShopParams) error
 }
 
@@ -125,7 +126,7 @@ func (r *shopRepositoryImpl) InsertShop(shop *domain.Shop) error {
 
 }
 
-func (r *shopRepositoryImpl) UpdateShop(shop *domain.Shop) error {
+func (r *shopRepositoryImpl) UpdateShop(params *dto.ShopParams, shop *domain.Shop) error {
 	var (
 		qb    sq.UpdateBuilder
 		query string
@@ -138,7 +139,8 @@ func (r *shopRepositoryImpl) UpdateShop(shop *domain.Shop) error {
 		Set("shop_name", shop.Name).
 		Set("shop_description", shop.Description).
 		Set("shop_photo_link", shop.PhotoLink).
-		Where("id = ?", shop.ID)
+		Set("updated_at", time.Now()).
+		Where("shop_id = ?", params.ID)
 
 	query, args, err = qb.PlaceholderFormat(sq.Dollar).ToSql()
 
@@ -154,6 +156,7 @@ func (r *shopRepositoryImpl) UpdateShop(shop *domain.Shop) error {
 	if err != nil {
 		log.Error(log.LogInfo{
 			"error": err.Error(),
+			"query": query,
 		}, "[SHOP REPOSITORY][UpdateShop] failed to execute sql statement")
 		return err
 	}
@@ -175,7 +178,7 @@ func (r *shopRepositoryImpl) DeleteShop(params *dto.ShopParams) error {
 
 	qb = sq.
 		Delete(TABLE_NAME).
-		Where("id = ?", params.ID)
+		Where("shop_id = ?", params.ID)
 
 	query, args, err = qb.PlaceholderFormat(sq.Dollar).ToSql()
 

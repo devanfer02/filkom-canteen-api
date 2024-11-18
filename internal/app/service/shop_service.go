@@ -11,7 +11,7 @@ type IShopService interface {
 	FetchAllShops() ([]domain.Shop, error)
 	FetchShopByID(params *dto.ShopParams) (*domain.Shop, error)
 	CreateShop(req *dto.ShopRequest) error
-	UpdateShop(req *dto.ShopRequest) error
+	UpdateShop(params *dto.ShopParams,req *dto.ShopRequest) error
 	DeleteShop(params *dto.ShopParams) error
 }
 
@@ -49,8 +49,8 @@ func (s *shopServiceImpl) CreateShop(req *dto.ShopRequest) error {
 	return err
 }
 
-func (s *shopServiceImpl) UpdateShop(req *dto.ShopRequest) error {
-	err := s.shopRepo.UpdateShop(&domain.Shop{
+func (s *shopServiceImpl) UpdateShop(params *dto.ShopParams,req *dto.ShopRequest) error {
+	err := s.shopRepo.UpdateShop(params, &domain.Shop{
 		Name:        req.Name,
 		Description: req.Description,
 	})

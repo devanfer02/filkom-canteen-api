@@ -75,35 +75,83 @@ func (c *shopController) FetchShopByID(ctx *gin.Context) {
 
 func (c *shopController) CreateShop(ctx *gin.Context) {
 	var (
-		code = 400
-		status = "fail"
+		code    = 400
+		status  = "fail"
 		message = "failed to create new shop"
 		shopReq dto.ShopRequest
-		err error 
+		err     error
 	)
 
-	defer func(){
+	defer func() {
 		ginlib.SendResponse(ctx, code, status, message, nil, err)
 	}()
 
 	if err := ctx.ShouldBind(&shopReq); err != nil {
-		return 
+		return
 	}
 
 	err = c.shopSvc.CreateShop(&shopReq)
 	code, status = domain.GetStatus(err)
 
 	if err != nil {
-		return 
+		return
 	}
 
 	message = "successfully create new shop"
 }
 
 func (c *shopController) UpdateShop(ctx *gin.Context) {
+	var (
+		code    = 400
+		status  = "fail"
+		message = "failed to update shop"
+		shopReq dto.ShopRequest
+		err     error
+		idParam = ctx.Param("id")
+	)
 
+	defer func() {
+		ginlib.SendResponse(ctx, code, status, message, nil, err)
+	}()
+
+	if err := ctx.ShouldBind(&shopReq); err != nil {
+		return
+	}
+
+	err = c.shopSvc.UpdateShop(&dto.ShopParams{ID: idParam}, &shopReq)
+	code, status = domain.GetStatus(err)
+
+	if err != nil {
+		return
+	}
+
+	message = "successfully update shop"
 }
 
 func (c *shopController) DeleteShop(ctx *gin.Context) {
+	var (
+		code    = 400
+		status  = "fail"
+		message = "failed to delete shop"
+		shopReq dto.ShopRequest
+		err     error
+		idParam = ctx.Param("id")
+	)
 
+	defer func() {
+		ginlib.SendResponse(ctx, code, status, message, nil, err)
+	}()
+
+	if err := ctx.ShouldBind(&shopReq); err != nil {
+		return
+	}
+
+	err = c.shopSvc.DeleteShop(&dto.ShopParams{ID: idParam})
+	code, status = domain.GetStatus(err)
+
+	if err != nil {
+		return
+	}
+
+	message = "successfully delete shop"
 }
