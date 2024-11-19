@@ -130,10 +130,6 @@ func (r *ownerRepositoryImpl) InsertOwner(owner *domain.Owner) error {
 		return err
 	}
 
-	log.Info(log.LogInfo{
-		"owner": owner,
-	}, "LOG OWNER")
-
 	qbi = sq.
 		Insert(OWNER_TABLENAME).
 		Columns("fullname", "wa_number", "username", "password", "role_id").
