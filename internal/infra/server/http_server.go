@@ -41,12 +41,15 @@ func (h *httpServer) MountControllers() {
 
 	// repositories
 	shopRepo := repository.NewShowRepository(h.dbx)
+	ownerRepo := repository.NewOwnerRepository(h.dbx)
 
 	// services
 	shopSvc := service.NewShopService(shopRepo)
+	ownerSvc := service.NewOwnerService(ownerRepo)
 
 	// controllers
 	controller.MountShopRoutes(v1, shopSvc)
+	controller.MountOwnerRoutes(v1, ownerSvc)
 }
 
 func (h *httpServer) Start() {

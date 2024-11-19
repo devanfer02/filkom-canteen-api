@@ -12,7 +12,7 @@ import (
 	"github.com/devanfer02/filkom-canteen/internal/pkg/log"
 )
 
-const TABLE_NAME = "shops"
+const SHOP_TABLENAME = "shops"
 
 type IShopRepository interface {
 	FetchAllShops() ([]domain.Shop, error)
@@ -38,7 +38,7 @@ func (r *shopRepositoryImpl) FetchAllShops() ([]domain.Shop, error) {
 		shops []domain.Shop = make([]domain.Shop, 0)
 	)
 
-	qb = sq.Select("*").From(TABLE_NAME)
+	qb = sq.Select("*").From(SHOP_TABLENAME)
 
 	query, _, err = qb.ToSql()
 
@@ -68,7 +68,7 @@ func (r *shopRepositoryImpl) FetchShopByID(params *dto.ShopParams) (*domain.Shop
 		args  []interface{}
 	)
 
-	qb = sq.Select("*").From(TABLE_NAME).Where("shop_id = ?", params.ID).Limit(1)
+	qb = sq.Select("*").From(SHOP_TABLENAME).Where("shop_id = ?", params.ID).Limit(1)
 
 	query, args, err = qb.PlaceholderFormat(sq.Dollar).ToSql()
 
@@ -102,7 +102,7 @@ func (r *shopRepositoryImpl) InsertShop(shop *domain.Shop) error {
 	)
 
 	qb = sq.
-		Insert(TABLE_NAME).
+		Insert(SHOP_TABLENAME).
 		Columns("shop_name", "shop_description", "shop_photo_link").
 		Values(shop.Name, shop.Description, shop.PhotoLink)
 
@@ -135,7 +135,7 @@ func (r *shopRepositoryImpl) UpdateShop(params *dto.ShopParams, shop *domain.Sho
 	)
 
 	qb = sq.
-		Update(TABLE_NAME).
+		Update(SHOP_TABLENAME).
 		Set("shop_name", shop.Name).
 		Set("shop_description", shop.Description).
 		Set("shop_photo_link", shop.PhotoLink).
@@ -177,7 +177,7 @@ func (r *shopRepositoryImpl) DeleteShop(params *dto.ShopParams) error {
 	)
 
 	qb = sq.
-		Delete(TABLE_NAME).
+		Delete(SHOP_TABLENAME).
 		Where("shop_id = ?", params.ID)
 
 	query, args, err = qb.PlaceholderFormat(sq.Dollar).ToSql()

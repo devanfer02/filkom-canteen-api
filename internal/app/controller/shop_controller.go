@@ -87,6 +87,7 @@ func (c *shopController) CreateShop(ctx *gin.Context) {
 	}()
 
 	if err := ctx.ShouldBind(&shopReq); err != nil {
+		code, status = domain.GetStatus(err)
 		return
 	}
 
@@ -115,6 +116,7 @@ func (c *shopController) UpdateShop(ctx *gin.Context) {
 	}()
 
 	if err := ctx.ShouldBind(&shopReq); err != nil {
+		code, status = domain.GetStatus(err)
 		return
 	}
 
@@ -143,6 +145,7 @@ func (c *shopController) DeleteShop(ctx *gin.Context) {
 	}()
 
 	if err := ctx.ShouldBind(&shopReq); err != nil {
+		code, status = domain.GetStatus(err)
 		return
 	}
 
