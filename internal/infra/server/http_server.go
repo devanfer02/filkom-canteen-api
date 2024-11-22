@@ -42,7 +42,7 @@ func (h *httpServer) MountMiddlewares() {
 func (h *httpServer) MountControllers() {
 	v1 := h.app.Group("/api/v1")
 
-	url := ginSwagger.URL("http://localhost:5700" + `/swagger/doc.json`)
+	url := ginSwagger.URL(env.AppEnv.AppUrl+ `/swagger/doc.json`)
 
 	// repositories
 	shopRepo := repository.NewShowRepository(h.dbx)
