@@ -14,6 +14,21 @@ definitions:
       wa_number:
         type: string
     type: object
+  domain.Shop:
+    properties:
+      created_at:
+        type: string
+      shop_description:
+        type: string
+      shop_id:
+        type: string
+      shop_name:
+        type: string
+      shop_photo_link:
+        type: string
+      updated_at:
+        type: string
+    type: object
   dto.OwnerRequest:
     properties:
       fullname:
@@ -24,6 +39,8 @@ definitions:
         type: string
       wa_number:
         type: string
+    type: object
+  dto.ShopRequest:
     type: object
   ginlib.Response:
     properties:
@@ -209,6 +226,171 @@ paths:
       summary: Update Owner
       tags:
       - Owners
+  /api/v1/shops:
+    get:
+      description: Fetch All Shops From Database
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/ginlib.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/domain.Shop'
+                  type: array
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ginlib.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Fetch All Shops
+      tags:
+      - Shops
+    post:
+      description: Register Shop to System
+      parameters:
+      - description: Shop Register Payload
+        in: body
+        name: ShopPayload
+        required: true
+        schema:
+          $ref: '#/definitions/dto.ShopRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ginlib.Response'
+        "409":
+          description: Username already exists
+          schema:
+            $ref: '#/definitions/ginlib.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ginlib.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Register Shop
+      tags:
+      - Shops
+  /api/v1/shops/{id}:
+    delete:
+      description: Delete Existing Shop
+      parameters:
+      - description: Shop ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ginlib.Response'
+        "404":
+          description: Item not found
+          schema:
+            $ref: '#/definitions/ginlib.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ginlib.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete Shop
+      tags:
+      - Shops
+    get:
+      description: Fetch Shop By ID From DB
+      parameters:
+      - description: Shop ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/ginlib.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/domain.Shop'
+              type: object
+        "404":
+          description: Item not found
+          schema:
+            allOf:
+            - $ref: '#/definitions/ginlib.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/domain.Shop'
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ginlib.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Fetch Shop By ID
+      tags:
+      - Shops
+    put:
+      description: Update Existing Shop
+      parameters:
+      - description: Shop Register Payload
+        in: body
+        name: ShopPayload
+        required: true
+        schema:
+          $ref: '#/definitions/dto.ShopRequest'
+      - description: Shop ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ginlib.Response'
+        "404":
+          description: Item not found
+          schema:
+            allOf:
+            - $ref: '#/definitions/ginlib.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/domain.Shop'
+              type: object
+        "409":
+          description: Username already exists
+          schema:
+            $ref: '#/definitions/ginlib.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ginlib.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Update Shop
+      tags:
+      - Shops
 securityDefinitions:
   ApiKeyAuth:
     description: 'API Key for accessing all endpoints. Type: Key TOKEN'

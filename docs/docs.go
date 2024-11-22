@@ -291,6 +291,283 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/api/v1/shops": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Fetch All Shops From Database",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Shops"
+                ],
+                "summary": "Fetch All Shops",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/ginlib.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/domain.Shop"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ginlib.Response"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Register Shop to System",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Shops"
+                ],
+                "summary": "Register Shop",
+                "parameters": [
+                    {
+                        "description": "Shop Register Payload",
+                        "name": "ShopPayload",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.ShopRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ginlib.Response"
+                        }
+                    },
+                    "409": {
+                        "description": "Username already exists",
+                        "schema": {
+                            "$ref": "#/definitions/ginlib.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ginlib.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/shops/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Fetch Shop By ID From DB",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Shops"
+                ],
+                "summary": "Fetch Shop By ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Shop ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/ginlib.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/domain.Shop"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "404": {
+                        "description": "Item not found",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/ginlib.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/domain.Shop"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ginlib.Response"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Update Existing Shop",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Shops"
+                ],
+                "summary": "Update Shop",
+                "parameters": [
+                    {
+                        "description": "Shop Register Payload",
+                        "name": "ShopPayload",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.ShopRequest"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Shop ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ginlib.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Item not found",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/ginlib.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/domain.Shop"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "409": {
+                        "description": "Username already exists",
+                        "schema": {
+                            "$ref": "#/definitions/ginlib.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ginlib.Response"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Delete Existing Shop",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Shops"
+                ],
+                "summary": "Delete Shop",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Shop ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ginlib.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Item not found",
+                        "schema": {
+                            "$ref": "#/definitions/ginlib.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ginlib.Response"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -317,6 +594,29 @@ const docTemplate = `{
                 }
             }
         },
+        "domain.Shop": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "shop_description": {
+                    "type": "string"
+                },
+                "shop_id": {
+                    "type": "string"
+                },
+                "shop_name": {
+                    "type": "string"
+                },
+                "shop_photo_link": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
         "dto.OwnerRequest": {
             "type": "object",
             "properties": {
@@ -333,6 +633,9 @@ const docTemplate = `{
                     "type": "string"
                 }
             }
+        },
+        "dto.ShopRequest": {
+            "type": "object"
         },
         "ginlib.Response": {
             "type": "object",
