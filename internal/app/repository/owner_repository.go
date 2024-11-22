@@ -2,6 +2,7 @@ package repository
 
 import (
 	"database/sql"
+	"strings"
 	"time"
 
 	sq "github.com/Masterminds/squirrel"
@@ -145,6 +146,11 @@ func (r *ownerRepositoryImpl) InsertOwner(owner *domain.Owner) error {
 	}
 
 	if _, err = r.conn.Exec(query, args...); err != nil {
+
+		if strings.Contains(err.Error(), "unique constraint") {
+			return domain.ErrDuplicateEntry
+		}
+
 		log.Error(log.LogInfo{
 			"error": err.Error(),
 		}, "[OWNER REPOSITORY][InsertOwner] failed to execute sql statement")

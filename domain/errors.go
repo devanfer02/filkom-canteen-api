@@ -3,8 +3,9 @@ package domain
 import "errors"
 
 var (
-	ErrNotFound = errors.New("item not found")
-	ErrBadRequest = errors.New("bad data request")
+	ErrNotFound       = errors.New("item not found")
+	ErrBadRequest     = errors.New("bad data request")
+	ErrDuplicateEntry = errors.New("duplicate item entry")
 )
 
 func GetStatus(err error) (int, string) {
@@ -17,6 +18,8 @@ func GetStatus(err error) (int, string) {
 		return 404, "fail"
 	case ErrBadRequest:
 		return 400, "fail"
+	case ErrDuplicateEntry:
+		return 409, "fail"
 	default:
 		return 500, "error"
 	}

@@ -23,6 +23,14 @@ func MountOwnerRoutes(r *gin.RouterGroup, ownerSvc service.IOwnerService) {
 	ownerR.DELETE("/:id", ownerCtr.DeleteOwner)
 }
 
+//	@Tags			Owners
+//	@Summary		Fetch All Owners
+//	@Description	Fetch All Owners From Database
+//	@Produce		json
+//	@Success		200	{object}	ginlib.Response{data=[]domain.Owner}	"OK"
+//	@Failure		500	{object}	ginlib.Response							"Internal Server Error"
+//	@Security		ApiKeyAuth
+//	@Router			/api/v1/owners [get]
 func (c *ownerController) FetchAll(ctx *gin.Context) {
 	var (
 		code    = 500
@@ -46,6 +54,16 @@ func (c *ownerController) FetchAll(ctx *gin.Context) {
 	message = "successfully fetch all owners"
 }
 
+//	@Tags			Owners
+//	@Summary		Fetch Owner By ID
+//	@Description	Fetch Owner By ID From DB
+//	@Produce		json
+//	@Param			id	path		string								true	"Owner ID"
+//	@Success		200	{object}	ginlib.Response{data=domain.Owner}	"OK"
+//	@Failure		404	{object}	ginlib.Response{data=domain.Owner}	"Item not found"
+//	@Failure		500	{object}	ginlib.Response						"Internal Server Error"
+//	@Security		ApiKeyAuth
+//	@Router			/api/v1/owners/{id} [get]
 func (c *ownerController) FetchByID(ctx *gin.Context) {
 	var (
 		code    = 500
@@ -70,11 +88,21 @@ func (c *ownerController) FetchByID(ctx *gin.Context) {
 	message = "successfully fetch owner"
 }
 
+//	@Tags			Owners
+//	@Summary		Register Owner
+//	@Description	Register Owner to System
+//	@Produce		json
+//	@Param			OwnerPayload	body		dto.OwnerRequest	true	"Owner Register Payload"
+//	@Success		200				{object}	ginlib.Response		"OK"
+//	@Failure		409				{object}	ginlib.Response		"Username already exists"
+//	@Failure		500				{object}	ginlib.Response		"Internal Server Error"
+//	@Security		ApiKeyAuth
+//	@Router			/api/v1/owners [post]
 func (c *ownerController) RegisterOwner(ctx *gin.Context) {
 	var (
 		code    = 500
 		status  = "fail"
-		message = "failed to fetch owner"
+		message = "failed to register owner"
 		owner   dto.OwnerRequest
 		err     error
 	)
@@ -99,6 +127,18 @@ func (c *ownerController) RegisterOwner(ctx *gin.Context) {
 
 }
 
+//	@Tags			Owners
+//	@Summary		Update Owner
+//	@Description	Update Existing Owner
+//	@Produce		json
+//	@Param			OwnerPayload	body		dto.OwnerRequest					true	"Owner Register Payload"
+//	@Param			id				path		string								true	"Owner ID"
+//	@Success		200				{object}	ginlib.Response						"OK"
+//	@Failure		404				{object}	ginlib.Response{data=domain.Owner}	"Item not found"
+//	@Failure		409				{object}	ginlib.Response						"Username already exists"
+//	@Failure		500				{object}	ginlib.Response						"Internal Server Error"
+//	@Security		ApiKeyAuth
+//	@Router			/api/v1/owners/{id} [put]
 func (c *ownerController) UpdateOwner(ctx *gin.Context) {
 	var (
 		code    = 500
@@ -130,6 +170,16 @@ func (c *ownerController) UpdateOwner(ctx *gin.Context) {
 	message = "successfully update owner"
 }
 
+//	@Tags			Owners
+//	@Summary		Delete Owner
+//	@Description	Delete Existing Owner
+//	@Produce		json
+//	@Param			id	path		string			true	"Owner ID"
+//	@Success		200	{object}	ginlib.Response	"OK"
+//	@Failure		404	{object}	ginlib.Response	"Item not found"
+//	@Failure		500	{object}	ginlib.Response	"Internal Server Error"
+//	@Security		ApiKeyAuth
+//	@Router			/api/v1/owners/{id} [delete]
 func (c *ownerController) DeleteOwner(ctx *gin.Context) {
 	var (
 		code    = 500

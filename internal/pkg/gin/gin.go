@@ -5,7 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type response struct {
+type Response struct {
 	Code    int         `json:"code"`
 	Status  string      `json:"status"`
 	Message string      `json:"message"`
@@ -20,7 +20,7 @@ func SendResponse(
 	data interface{},
 	err error,
 ) {
-	ctx.JSON(code, response{
+	ctx.JSON(code, Response{
 		Code:    code,
 		Status:  status,
 		Message: message,
@@ -37,4 +37,14 @@ func SendResponse(
 			return err.Error()
 		}(),
 	})
+}
+
+func SendAbortResponse(
+	ctx *gin.Context,
+	code int,
+	status, message string,
+	err error,	
+) {
+	SendResponse(ctx, code, status, message, nil, err)
+	ctx.Abort()
 }
