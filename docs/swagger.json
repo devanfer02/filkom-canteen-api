@@ -6,7 +6,7 @@
         "contact": {},
         "version": "1.0"
     },
-    "host": "localhost:8080",
+    "host": "0.0.0.0:5700",
     "paths": {
         "/api/v1/owners": {
             "get": {
