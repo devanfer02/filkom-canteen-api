@@ -54,11 +54,11 @@ definitions:
       status:
         type: string
     type: object
-host: 0.0.0.0:5700
+host: filkom-api.dvnnfrr.my.id
 info:
   contact: {}
   description: This is FILKOM Canteen API Documentation
-  title: FILKOM Canteen API
+  title: FILKOM Canteen APII
   version: "1.0"
 paths:
   /api/v1/owners:
@@ -391,6 +391,8 @@ paths:
       summary: Update Shop
       tags:
       - Shops
+schemes:
+- https
 securityDefinitions:
   ApiKeyAuth:
     description: 'API Key for accessing all endpoints. Type: Key TOKEN'

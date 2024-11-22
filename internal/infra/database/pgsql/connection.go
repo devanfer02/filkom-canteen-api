@@ -5,6 +5,9 @@ import (
 
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
+	"github.com/golang-migrate/migrate/v4"
+	"github.com/golang-migrate/migrate/v4/database/postgres"
+	_ "github.com/golang-migrate/migrate/v4/source/file"
 
 	"github.com/devanfer02/filkom-canteen/internal/infra/env"
 	"github.com/devanfer02/filkom-canteen/internal/pkg/log"
@@ -24,6 +27,31 @@ func NewPgsqlConn() *sqlx.DB {
 			"error": err.Error(),
 		}, "[CONNECTION][NewPgsqlConn] failed to connect to database")
 		
+	}
+
+	driver, err := postgres.WithInstance(dbx.DB, &postgres.Config{})
+
+	if err != nil {
+			log.Fatal(log.LogInfo{
+			"error": err.Error(),
+		}, "CONNECTION[NewPgsqlConn]")
+	}
+
+	m, err := migrate.NewWithDatabaseInstance(
+		"file://./internal/infra/database/pgsql/migrations",
+		env.AppEnv.DBName, driver, 
+	)
+
+	if err != nil {
+		log.Fatal(log.LogInfo{
+			"error": err.Error(),
+		}, "CONNECTION[NewPgsqlConn]")
+	}
+
+	if err := m.Up(); err != nil && err != migrate.ErrNoChange {
+			log.Fatal(log.LogInfo{
+			"error": err.Error(),
+		}, "CONNECTION[NewPgsqlConn]")
 	}
 
 	return dbx

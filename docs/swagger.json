@@ -1,12 +1,15 @@
 {
+    "schemes": [
+        "https"
+    ],
     "swagger": "2.0",
     "info": {
         "description": "This is FILKOM Canteen API Documentation",
-        "title": "FILKOM Canteen API",
+        "title": "FILKOM Canteen APII",
         "contact": {},
         "version": "1.0"
     },
-    "host": "0.0.0.0:5700",
+    "host": "filkom-api.dvnnfrr.my.id",
     "paths": {
         "/api/v1/owners": {
             "get": {

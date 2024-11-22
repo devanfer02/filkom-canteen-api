@@ -6,14 +6,14 @@ import (
 )
 
 type Env struct {
-	AppEnv      string `mapstructure:"APP_ENV"`
-	AppPort     string `mapstructure:"APP_PORT"`
-	AppProtocol string `mapstructure:"APP_PROTOCOL"`
-	DBHost      string `mapstructure:"DB_HOST"`
-	DBPort      string `mapstructure:"DB_PORT"`
-	DBUser      string `mapstructure:"DB_USER"`
-	DBPass      string `mapstructure:"DB_PASS"`
-	DBName      string `mapstructure:"DB_NAME"`
+	AppEnv  string `mapstructure:"APP_ENV"`
+	AppPort string `mapstructure:"APP_PORT"`
+	AppUrl  string `mapstructure:"APP_URL"`
+	DBHost  string `mapstructure:"DB_HOST"`
+	DBPort  string `mapstructure:"DB_PORT"`
+	DBUser  string `mapstructure:"DB_USER"`
+	DBPass  string `mapstructure:"DB_PASS"`
+	DBName  string `mapstructure:"DB_NAME"`
 }
 
 var AppEnv = getEnv()

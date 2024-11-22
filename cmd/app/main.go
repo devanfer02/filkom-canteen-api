@@ -7,10 +7,11 @@ import (
 	"github.com/devanfer02/filkom-canteen/internal/infra/server"
 )
 
-//	@title						FILKOM Canteen API
+//	@title						FILKOM Canteen APII
 //	@version					1.0
 //	@description				This is FILKOM Canteen API Documentation
-//	@host						0.0.0.0:5700
+//	@host						filkom-api.dvnnfrr.my.id
+//  @schemes					https
 //	@securityDefinitions.apikey	ApiKeyAuth
 //	@in							header
 //	@name						x-api-key
