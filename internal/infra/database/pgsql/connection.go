@@ -38,7 +38,7 @@ func NewPgsqlConn() *sqlx.DB {
 	}
 
 	m, err := migrate.NewWithDatabaseInstance(
-		"file://./internal/infra/database/pgsql/migrations",
+		"file://migrations",
 		env.AppEnv.DBName, driver, 
 	)
 
