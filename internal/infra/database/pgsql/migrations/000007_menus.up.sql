@@ -4,6 +4,8 @@ CREATE TABLE menus (
     menu_price INTEGER,
     menu_status MENU_STATUS_ENUM,
     menu_photo_link VARCHAR(255),
+    shop_id UUID,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(menu_id, shop_id)
 );
