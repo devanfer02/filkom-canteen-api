@@ -10,7 +10,7 @@ import (
 //	@title						FILKOM Canteen API
 //	@version					1.0
 //	@description				This is FILKOM Canteen API Documentation
-//	@host						localhost:8080
+//	@host						0.0.0.0:5700
 //	@securityDefinitions.apikey	ApiKeyAuth
 //	@in							header
 //	@name						x-api-key
