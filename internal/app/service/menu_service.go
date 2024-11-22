@@ -10,7 +10,7 @@ import (
 type IMenuService interface {
 	FetchAllMenus() ([]domain.Menu, error)
 	FetchMenuByID(params *dto.MenuParams) (*domain.Menu, error)
-	CreateMenu(req *dto.MenuRequest) error
+	CreateMenu(params *dto.MenuParams, req *dto.MenuRequest) error
 	UpdateMenu(params *dto.MenuParams,req *dto.MenuRequest) error
 	DeleteMenu(params *dto.MenuParams) error	
 }
@@ -39,10 +39,10 @@ func(s *menuServiceImpl) FetchMenuByID(params *dto.MenuParams) (*domain.Menu, er
 	return menu, err 
 }
 
-func(s *menuServiceImpl) CreateMenu(req *dto.MenuRequest) error {
+func(s *menuServiceImpl) CreateMenu(params *dto.MenuParams, req *dto.MenuRequest) error {
 	err := s.menuRepo.InsertMenu(&domain.Menu{
 		Name: req.Name,
-		ShopID: req.ShopID,
+		ShopID: params.ShopID,
 		Price: req.Price,
 		Status: req.Status,
 	})

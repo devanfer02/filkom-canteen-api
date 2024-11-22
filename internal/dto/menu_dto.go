@@ -3,7 +3,8 @@ package dto
 import "mime/multipart"
 
 type MenuParams struct {
-	ID string
+	ID     string
+	ShopID string
 }
 
 type MenuRequest struct {
@@ -12,5 +13,5 @@ type MenuRequest struct {
 	Price     int64  `json:"price" db:"price"`
 	Status    string `json:"status" db:"status"`
 	PhotoLink string `json:"menu_photo_link" db:"menu_photo_link"`
-	Photo     *multipart.FileHeader 
+	Photo     *multipart.FileHeader
 }

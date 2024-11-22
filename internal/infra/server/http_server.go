@@ -46,14 +46,17 @@ func (h *httpServer) MountControllers() {
 	// repositories
 	shopRepo := repository.NewShowRepository(h.dbx)
 	ownerRepo := repository.NewOwnerRepository(h.dbx)
+	menuRepo := repository.NewMehnuRepository(h.dbx)
 
 	// services
 	shopSvc := service.NewShopService(shopRepo)
 	ownerSvc := service.NewOwnerService(ownerRepo)
+	menuSvc := service.NewMenuService(menuRepo)
 
 	// controllers
 	controller.MountShopRoutes(v1, shopSvc)
 	controller.MountOwnerRoutes(v1, ownerSvc)
+	controller.MountMenuRoutes(v1, menuSvc)
 	
 	h.app.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
 }

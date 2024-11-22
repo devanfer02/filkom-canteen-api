@@ -1,11 +1,26 @@
 services:
-  app:
-    container_name: appName
+  filkom-api:
+    container_name: filkom-api
     build:
       context: .
       dockerfile: Dockerfile
     ports:
       - "8080:8080"
-    networks:
-      - networkName
+    network_mode: host 
     restart: on-failure
+  filkom-db:
+    container_name: filkom-db
+    image: postgres:16.1
+    environment:
+      - POSTGRES_USER=${DB_USER} 
+      - POSTGRES_PASSWORD=${DB_PASS} 
+      - POSTGRES_DB=${DB_NAME} 
+      - TZ=Asia/Jakarta
+      - PORT=${DB_PORT}
+    volumes:
+      - filkom-db:/var/lib/postgresql/data
+    network_mode: host
+    
+volumes:
+  filkom-db:
+    driver: local
