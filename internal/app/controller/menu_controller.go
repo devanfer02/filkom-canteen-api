@@ -18,7 +18,7 @@ func MountMenuRoutes(r *gin.RouterGroup, menuSvc service.IMenuService) {
 
 	menuR.GET("", menuCtr.FetchAll)
 	menuR.GET("/:id", menuCtr.FetchByID)
-	menuR.POST("/shops/:shopId", menuCtr.CreateMenu)
+	menuR.POST("", menuCtr.CreateMenu)
 	menuR.PUT("/:id", menuCtr.UpdateMenu)
 	menuR.DELETE("/:id", menuCtr.DeleteMenu)
 }
@@ -77,7 +77,6 @@ func (c *menuController) CreateMenu(ctx *gin.Context) {
 		message = "failed to fetch menu"
 		menu    dto.MenuRequest
 		err     error
-		shopId  = ctx.Param("shopId")
 	)
 
 	defer func() {
@@ -89,9 +88,7 @@ func (c *menuController) CreateMenu(ctx *gin.Context) {
 		return
 	}
 
-	err = c.menuSvc.CreateMenu(&dto.MenuParams{
-		ShopID: shopId,
-	}, &menu)
+	err = c.menuSvc.CreateMenu(&dto.MenuParams{}, &menu)
 	code, status = domain.GetStatus(err)
 
 	if err != nil {

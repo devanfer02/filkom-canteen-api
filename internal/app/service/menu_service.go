@@ -42,7 +42,7 @@ func(s *menuServiceImpl) FetchMenuByID(params *dto.MenuParams) (*domain.Menu, er
 func(s *menuServiceImpl) CreateMenu(params *dto.MenuParams, req *dto.MenuRequest) error {
 	err := s.menuRepo.InsertMenu(&domain.Menu{
 		Name: req.Name,
-		ShopID: params.ShopID,
+		ShopID: req.ShopID,
 		Price: req.Price,
 		Status: req.Status,
 	})

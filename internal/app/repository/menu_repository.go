@@ -111,7 +111,7 @@ func (r *menuRepositoryImpl) InsertMenu(menu *domain.Menu) error {
 	qbi = sq.
 		Insert(MENU_TABLENAME).
 		Columns("menu_name", "shop_id", "menu_price", "menu_status", "menu_photo_link"). 
-		Values(menu.Name, menu.ShopID, menu.Status, menu.PhotoLink)
+		Values(menu.Name, menu.ShopID, menu.Price, menu.Status, menu.PhotoLink)
 
 	query, args, err = qbi.PlaceholderFormat(sq.Dollar).ToSql()
 
@@ -143,8 +143,9 @@ func (r *menuRepositoryImpl) UpdateMenu(params *dto.MenuParams, menu *domain.Men
 	qb = sq.
 		Update(MENU_TABLENAME).
 		Set("menu_name", menu.Name).
-		Set("menu_price", menu.Status).
+		Set("menu_price", menu.Price).
 		Set("menu_photo_link", menu.PhotoLink).
+		Set("menu_status", menu.Status).
 		Set("updated_at", time.Now()). 
 		Where("menu_id = ?", params.ID)
 
