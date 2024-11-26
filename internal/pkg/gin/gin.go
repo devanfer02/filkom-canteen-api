@@ -30,7 +30,7 @@ func SendResponse(
 				return ""
 			}
 
-			if code, _ := domain.GetStatus(err); code == 500 {
+			if c, _ := domain.GetStatus(err); c == 500 && code == c {
 				return "internal server error"
 			}
 

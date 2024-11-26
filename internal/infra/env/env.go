@@ -20,6 +20,7 @@ type Env struct {
 	RedisHost     string `mapstructure:"REDIS_HOST"`
 	RedisPort     string `mapstructure:"REDIS_PORT"`
 	RedisPassword string `mapstructure:"REDIS_PASS"`
+	ApiKey        string `mapstructure:"API_KEY"`
 }
 
 var AppEnv = getEnv()
