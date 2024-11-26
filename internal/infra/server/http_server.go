@@ -12,6 +12,7 @@ import (
 	"github.com/devanfer02/filkom-canteen/internal/infra/env"
 	"github.com/devanfer02/filkom-canteen/internal/middleware"
 	"github.com/devanfer02/filkom-canteen/internal/pkg/log"
+	"github.com/devanfer02/filkom-canteen/internal/pkg/redis"
 )
 
 type Server interface {
@@ -41,6 +42,8 @@ func (h *httpServer) MountMiddlewares() {
 
 func (h *httpServer) MountControllers() {
 	v1 := h.app.Group("/api/v1")
+	redis := redis.NewRedisClient()
+	mdlwr := middleware.NewMiddleware(redis)
 
 	url := ginSwagger.URL(env.AppEnv.AppUrl+ `/swagger/doc.json`)
 
@@ -60,6 +63,10 @@ func (h *httpServer) MountControllers() {
 	controller.MountMenuRoutes(v1, menuSvc)
 	
 	h.app.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
+
+	h.app.GET("/hello", mdlwr.Authenticate(), func(ctx *gin.Context) {
+		ctx.String(200, "Hello world")
+	})
 }
 
 func (h *httpServer) Start() {

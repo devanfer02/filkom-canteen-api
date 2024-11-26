@@ -6,14 +6,20 @@ import (
 )
 
 type Env struct {
-	AppEnv  string `mapstructure:"APP_ENV"`
-	AppPort string `mapstructure:"APP_PORT"`
-	AppUrl  string `mapstructure:"APP_URL"`
-	DBHost  string `mapstructure:"DB_HOST"`
-	DBPort  string `mapstructure:"DB_PORT"`
-	DBUser  string `mapstructure:"DB_USER"`
-	DBPass  string `mapstructure:"DB_PASS"`
-	DBName  string `mapstructure:"DB_NAME"`
+	AppEnv        string `mapstructure:"APP_ENV"`
+	AppPort       string `mapstructure:"APP_PORT"`
+	AppUrl        string `mapstructure:"APP_URL"`
+	DBHost        string `mapstructure:"DB_HOST"`
+	DBPort        string `mapstructure:"DB_PORT"`
+	DBUser        string `mapstructure:"DB_USER"`
+	DBPass        string `mapstructure:"DB_PASS"`
+	DBName        string `mapstructure:"DB_NAME"`
+	JWTKey        string `mapstructure:"JWT_SECRET_KEY"`
+	JWTUserRole   string `mapstructure:"JWT_USER_ROLE"`
+	JWTAdminRole  string `mapstructure:"JWT_ADMIN_ROLE"`
+	RedisHost     string `mapstructure:"REDIS_HOST"`
+	RedisPort     string `mapstructure:"REDIS_PORT"`
+	RedisPassword string `mapstructure:"REDIS_PASS"`
 }
 
 var AppEnv = getEnv()
