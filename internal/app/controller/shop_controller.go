@@ -97,7 +97,6 @@ func (c *shopController) FetchShopByID(ctx *gin.Context) {
 //	@Produce		json
 //	@Param			ShopPayload	body		dto.ShopRequest	true	"Shop Register Payload"
 //	@Success		200				{object}	ginlib.Response		"OK"
-//	@Failure		409				{object}	ginlib.Response		"Username already exists"
 //	@Failure		500				{object}	ginlib.Response		"Internal Server Error"
 //	@Security		ApiKeyAuth
 //	@Router			/api/v1/shops [post]

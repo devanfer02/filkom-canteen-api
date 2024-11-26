@@ -7,7 +7,7 @@ import (
 	"github.com/devanfer02/filkom-canteen/internal/infra/server"
 )
 
-//	@title						FILKOM Canteen APII
+//	@title						FILKOM Canteen API
 //	@version					1.0
 //	@description				This is FILKOM Canteen API Documentation
 //	@host						filkom-api.dvnnfrr.my.id

@@ -1,4 +1,23 @@
 definitions:
+  domain.Menu:
+    properties:
+      created_at:
+        type: string
+      menu_id:
+        type: string
+      menu_name:
+        type: string
+      menu_photo_link:
+        type: string
+      price:
+        type: integer
+      shop_id:
+        type: string
+      status:
+        type: string
+      updated_at:
+        type: string
+    type: object
   domain.Owner:
     properties:
       created_at:
@@ -29,6 +48,8 @@ definitions:
       updated_at:
         type: string
     type: object
+  dto.MenuRequest:
+    type: object
   dto.OwnerRequest:
     properties:
       fullname:
@@ -58,9 +79,161 @@ host: filkom-api.dvnnfrr.my.id
 info:
   contact: {}
   description: This is FILKOM Canteen API Documentation
-  title: FILKOM Canteen APII
+  title: FILKOM Canteen API
   version: "1.0"
 paths:
+  /api/v1/menus:
+    delete:
+      description: Delete Existing Menu from System
+      parameters:
+      - description: Menu ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ginlib.Response'
+        "404":
+          description: Item not found
+          schema:
+            $ref: '#/definitions/ginlib.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ginlib.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete Menu
+      tags:
+      - Menus
+    get:
+      description: Fetch All Menus From Database
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/ginlib.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/domain.Menu'
+                  type: array
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ginlib.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Fetch All Menus
+      tags:
+      - Menus
+    post:
+      description: Register Menu to System
+      parameters:
+      - description: Menu Register Payload
+        in: body
+        name: MenuPayload
+        required: true
+        schema:
+          $ref: '#/definitions/dto.MenuRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ginlib.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ginlib.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Register Menu
+      tags:
+      - Menus
+    put:
+      description: Update Existing Menu
+      parameters:
+      - description: Menu Update Payload
+        in: body
+        name: MenuPayload
+        required: true
+        schema:
+          $ref: '#/definitions/dto.MenuRequest'
+      - description: Menu ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ginlib.Response'
+        "404":
+          description: Item not found
+          schema:
+            $ref: '#/definitions/ginlib.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ginlib.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Update Menu
+      tags:
+      - Menus
+  /api/v1/menus/{id}:
+    get:
+      description: Fetch Menu By ID From DB
+      parameters:
+      - description: Menu ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/ginlib.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/domain.Menu'
+              type: object
+        "404":
+          description: Item not found
+          schema:
+            allOf:
+            - $ref: '#/definitions/ginlib.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/domain.Menu'
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ginlib.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Fetch Menu By ID
+      tags:
+      - Menus
   /api/v1/owners:
     get:
       description: Fetch All Owners From Database
@@ -266,10 +439,6 @@ paths:
       responses:
         "200":
           description: OK
-          schema:
-            $ref: '#/definitions/ginlib.Response'
-        "409":
-          description: Username already exists
           schema:
             $ref: '#/definitions/ginlib.Response'
         "500":
