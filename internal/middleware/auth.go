@@ -2,6 +2,7 @@ package middleware
 
 import (
 	"errors"
+	"slices"
 	"strings"
 
 	"github.com/devanfer02/filkom-canteen/domain"
@@ -73,7 +74,7 @@ func (m *Middleware) Authenticate() gin.HandlerFunc {
 	}
 }
 
-func (m *Middleware) AuthorizeAdmin(roleName string) gin.HandlerFunc {
+func (m *Middleware) AuthorizeAdmin(roles ...string) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		var (
 			err     error
@@ -83,7 +84,7 @@ func (m *Middleware) AuthorizeAdmin(roleName string) gin.HandlerFunc {
 			role    *domain.Role
 		)
 
-		role, err = m.roleRepo.FetchOne(roleName)
+		role, err = m.roleRepo.FetchOne(ctx.GetString("role"))
 
 		defer func() {
 			if err != nil {
@@ -96,7 +97,7 @@ func (m *Middleware) AuthorizeAdmin(roleName string) gin.HandlerFunc {
 			return
 		}
 
-		if role.ID != ctx.GetString("role") {
+		if !slices.Contains(roles, role.Name) {
 			log.Info(log.LogInfo{
 				"role_db":  role.ID,
 				"role_ctx": ctx.GetString("role"),

@@ -63,7 +63,7 @@ func (h *httpServer) MountControllers() {
 	orderSvc := service.NewOrderService(orderRepo)
 
 	// controllers
-	controller.MountShopRoutes(v1, shopSvc)
+	controller.MountShopRoutes(v1, shopSvc, mdlwr)
 	controller.MountOwnerRoutes(v1, ownerSvc)
 	controller.MountMenuRoutes(v1, menuSvc)
 	controller.MountOrderRoutes(v1, orderSvc)

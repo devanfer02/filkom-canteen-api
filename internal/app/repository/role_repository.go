@@ -10,7 +10,7 @@ import (
 const ROLE_TABLENAME = "roles"
 
 type IRoleRepository interface {
-	FetchOne(name string) (*domain.Role, error)
+	FetchOne(id string) (*domain.Role, error)
 }
 
 type roleRepositoryImpl struct {
@@ -21,7 +21,7 @@ func NewRoleRepository(conn *sqlx.DB) IRoleRepository {
 	return &roleRepositoryImpl{conn}
 }
 
-func (r *roleRepositoryImpl) FetchOne(name string) (*domain.Role, error) {
+func (r *roleRepositoryImpl) FetchOne(id string) (*domain.Role, error) {
 	var (
 		qb    sq.SelectBuilder
 		query string
@@ -30,7 +30,7 @@ func (r *roleRepositoryImpl) FetchOne(name string) (*domain.Role, error) {
 		err   error
 	)
 
-	qb = sq.Select("*").From(ROLE_TABLENAME).Where("role_name = ?", name).Limit(1)
+	qb = sq.Select("*").From(ROLE_TABLENAME).Where("role_id = ?", id).Limit(1)
 
 	query, args, err = qb.PlaceholderFormat(sq.Dollar).ToSql()
 
