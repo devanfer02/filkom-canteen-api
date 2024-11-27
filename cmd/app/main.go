@@ -11,7 +11,7 @@ import (
 //	@version					1.0
 //	@description				This is FILKOM Canteen API Documentation
 //	@host						filkom-api.dvnnfrr.my.id
-//  @schemes					https
+//	@schemes					https
 //	@securityDefinitions.apikey	ApiKeyAuth
 //	@in							header
 //	@name						x-api-key

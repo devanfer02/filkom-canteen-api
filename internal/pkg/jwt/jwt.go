@@ -30,12 +30,7 @@ func ValidateToken(tokenReq string) (*Issuer, error) {
 	)
 
 	token, err = j.ParseWithClaims(tokenReq, &claims, func(token *j.Token) (interface{}, error) {
-		log.Info(log.LogInfo{
-			"token_method": token.Method,
-		}, "CALLBACK!")
-		
-    
-		// Ensure it's HS256
+
 		if _, ok := token.Method.(*j.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("unexpected signing method: %v", token.Method)
 		}
@@ -61,6 +56,7 @@ func ValidateToken(tokenReq string) (*Issuer, error) {
 	issuer = &Issuer{
 		UserID: claims.UserID,
 		Issuer: claims.Issuer,
+		Role: claims.Role,
 	}
 
 	return issuer, nil

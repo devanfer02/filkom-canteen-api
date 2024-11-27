@@ -815,6 +815,110 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/api/v1/shops/{id}/owners/{ownerId}": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Add Owner to Shop",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Shops"
+                ],
+                "summary": "Add Owner to Shop",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Shop ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Owner ID",
+                        "name": "ownerId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ginlib.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Shop or Owner not found",
+                        "schema": {
+                            "$ref": "#/definitions/ginlib.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ginlib.Response"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Remove Owner from Shop",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Shops"
+                ],
+                "summary": "Remove Owner from Shop",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Shop ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Owner ID",
+                        "name": "ownerId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ginlib.Response"
+                        }
+                    },
+                    "404": {
+                        "description": "Item not found",
+                        "schema": {
+                            "$ref": "#/definitions/ginlib.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ginlib.Response"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {

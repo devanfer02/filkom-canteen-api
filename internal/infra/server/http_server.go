@@ -43,14 +43,18 @@ func (h *httpServer) MountMiddlewares() {
 func (h *httpServer) MountControllers() {
 	v1 := h.app.Group("/api/v1")
 	redis := redis.NewRedisClient()
-	mdlwr := middleware.NewMiddleware(redis)
+	
 
 	url := ginSwagger.URL(env.AppEnv.AppUrl+ `/swagger/doc.json`)
 
 	// repositories
 	shopRepo := repository.NewShowRepository(h.dbx)
 	ownerRepo := repository.NewOwnerRepository(h.dbx)
-	menuRepo := repository.NewMehnuRepository(h.dbx)
+	menuRepo := repository.NewMenuRepository(h.dbx)
+	roleRepo := repository.NewRoleRepository(h.dbx)
+
+	// middlewares
+	mdlwr := middleware.NewMiddleware(redis, roleRepo)
 
 	// services
 	shopSvc := service.NewShopService(shopRepo)
@@ -64,7 +68,7 @@ func (h *httpServer) MountControllers() {
 	
 	h.app.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
 
-	h.app.GET("/hello", mdlwr.Authenticate(), func(ctx *gin.Context) {
+	h.app.GET("/hello", mdlwr.Authenticate(), mdlwr.AuthorizeAdmin("Owner"), func(ctx *gin.Context) {
 		ctx.String(200, "Hello world")
 	})
 }

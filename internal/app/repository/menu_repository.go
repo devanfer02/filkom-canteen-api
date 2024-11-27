@@ -26,7 +26,7 @@ type menuRepositoryImpl struct {
 	conn *sqlx.DB
 }
 
-func NewMehnuRepository(conn *sqlx.DB) IMenuRepository {
+func NewMenuRepository(conn *sqlx.DB) IMenuRepository {
 	return &menuRepositoryImpl{conn}
 }
 

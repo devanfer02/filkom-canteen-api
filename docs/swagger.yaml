@@ -560,6 +560,73 @@ paths:
       summary: Update Shop
       tags:
       - Shops
+  /api/v1/shops/{id}/owners/{ownerId}:
+    delete:
+      description: Remove Owner from Shop
+      parameters:
+      - description: Shop ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Owner ID
+        in: path
+        name: ownerId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ginlib.Response'
+        "404":
+          description: Item not found
+          schema:
+            $ref: '#/definitions/ginlib.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ginlib.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Remove Owner from Shop
+      tags:
+      - Shops
+    post:
+      description: Add Owner to Shop
+      parameters:
+      - description: Shop ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Owner ID
+        in: path
+        name: ownerId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ginlib.Response'
+        "404":
+          description: Shop or Owner not found
+          schema:
+            $ref: '#/definitions/ginlib.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ginlib.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Add Owner to Shop
+      tags:
+      - Shops
 schemes:
 - https
 securityDefinitions:

@@ -4,9 +4,11 @@ import (
 	"errors"
 	"strings"
 
+	"github.com/devanfer02/filkom-canteen/domain"
 	"github.com/devanfer02/filkom-canteen/internal/infra/env"
 	ginlib "github.com/devanfer02/filkom-canteen/internal/pkg/gin"
 	"github.com/devanfer02/filkom-canteen/internal/pkg/jwt"
+	"github.com/devanfer02/filkom-canteen/internal/pkg/log"
 	"github.com/gin-gonic/gin"
 )
 
@@ -68,6 +70,42 @@ func (m *Middleware) Authenticate() gin.HandlerFunc {
 		ctx.Set("id", issuer.UserID)
 		ctx.Set("user", issuer.Issuer)
 		ctx.Set("role", issuer.Role)
+		ctx.Next()
+	}
+}
+
+func (m *Middleware) AuthorizeAdmin(roleName string) gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		var (
+			err error 
+			code = 401
+			status = "fail"
+			message = "unauthorized"
+			role *domain.Role
+		)
+
+		role, err = m.roleRepo.FetchOne(roleName)
+
+		defer func() {
+			if err != nil {
+				ginlib.SendAbortResponse(ctx, code, status, message, err)
+			}
+		}()
+
+		if err != nil {
+			err = errors.New("failed to authorize")
+			return 
+		}
+
+		if role.ID != ctx.GetString("role") {
+			log.Info(log.LogInfo{
+				"role_db": role.ID,
+				"role_ctx": ctx.GetString("role"),
+			}, "LOGGED")
+			err = errors.New("unauthorized")
+			return 
+		}
+
 		ctx.Next()
 	}
 }

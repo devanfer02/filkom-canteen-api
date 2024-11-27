@@ -11,6 +11,8 @@ type IShopService interface {
 	FetchAllShops() ([]domain.Shop, error)
 	FetchShopByID(params *dto.ShopParams) (*domain.Shop, error)
 	CreateShop(req *dto.ShopRequest) error
+	AddOwner(req *dto.ShopParams) error
+	RemoveOwner(req *dto.ShopParams) error
 	UpdateShop(params *dto.ShopParams,req *dto.ShopRequest) error
 	DeleteShop(params *dto.ShopParams) error
 }
@@ -47,6 +49,18 @@ func (s *shopServiceImpl) CreateShop(req *dto.ShopRequest) error {
 	})
 
 	return err
+}
+
+func (s *shopServiceImpl) AddOwner(req *dto.ShopParams) error {
+	err := s.shopRepo.InsertShopOwner(req)
+
+	return err 
+}
+
+func (s *shopServiceImpl) RemoveOwner(req *dto.ShopParams) error {
+	err := s.shopRepo.DeleteShopOwner(req)
+
+	return err 
 }
 
 func (s *shopServiceImpl) UpdateShop(params *dto.ShopParams,req *dto.ShopRequest) error {

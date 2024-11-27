@@ -18,7 +18,9 @@ type IShopRepository interface {
 	FetchAllShops() ([]domain.Shop, error)
 	FetchShopByID(params *dto.ShopParams) (*domain.Shop, error)
 	InsertShop(shop *domain.Shop) error
+	InsertShopOwner(params *dto.ShopParams) error
 	UpdateShop(params *dto.ShopParams, shop *domain.Shop) error
+	DeleteShopOwner(params *dto.ShopParams) error
 	DeleteShop(params *dto.ShopParams) error
 }
 
@@ -123,7 +125,76 @@ func (r *shopRepositoryImpl) InsertShop(shop *domain.Shop) error {
 	}
 
 	return nil
+}
 
+func (r *shopRepositoryImpl) InsertShopOwner(params *dto.ShopParams) error {
+	var (
+		qb    sq.InsertBuilder
+		query string
+		err   error
+		args  []any
+	)
+
+	qb = sq.
+		Insert("shop_owners").
+		Columns("shop_id", "admin_id").
+		Values(params.ID, params.OwnerID)
+
+	query, args, err = qb.PlaceholderFormat(sq.Dollar).ToSql()
+
+	if err != nil {
+		log.Error(log.LogInfo{
+			"error": err.Error(),
+		}, "[SHOP REPOSITORY][InsertShopOwner] failed to convert query builder to sql")
+		return err
+	}
+
+	if _, err = r.conn.Exec(query, args...); err != nil {
+		log.Error(log.LogInfo{
+			"error": err.Error(),
+			"query": query,
+		}, "[SHOP REPOSITORY][UpdateShop] failed to execute sql statement")
+		return err
+	}
+
+	return nil
+}
+
+func (r *shopRepositoryImpl) DeleteShopOwner(params *dto.ShopParams) error {
+	var (
+		qb    sq.DeleteBuilder
+		query string
+		err   error
+		args  []any
+	)
+
+	qb = sq. 
+		Delete("shop_owners"). 
+		Where("shop_id = ? AND admin_id = ?", params.ID, params.OwnerID)
+	
+	query, args, err = qb.PlaceholderFormat(sq.Dollar).ToSql()
+
+	if err != nil {
+		log.Error(log.LogInfo{
+			"error": err.Error(),
+		}, "[SHOP REPOSITORY][DeleteShopOwner] failed to convert query builder to sql")
+		return err	
+	}
+
+	res, err := r.conn.Exec(query, args...)
+
+	if err != nil {
+		log.Error(log.LogInfo{
+			"error": err.Error(),
+		}, "[SHOP REPOSITORY][DeleteShop] failed to execute sql statement")
+		return err
+	}
+
+	if rows, _ := res.RowsAffected(); rows < 1 {
+		return domain.ErrNotFound
+	}
+
+	return nil
 }
 
 func (r *shopRepositoryImpl) UpdateShop(params *dto.ShopParams, shop *domain.Shop) error {

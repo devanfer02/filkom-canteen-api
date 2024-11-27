@@ -28,7 +28,7 @@ func MountMenuRoutes(r *gin.RouterGroup, menuSvc service.IMenuService) {
 //	@Description	Fetch All Menus From Database
 //	@Produce		json
 //	@Success		200	{object}	ginlib.Response{data=[]domain.Menu}	"OK"
-//	@Failure		500	{object}	ginlib.Response							"Internal Server Error"
+//	@Failure		500	{object}	ginlib.Response						"Internal Server Error"
 //	@Security		ApiKeyAuth
 //	@Router			/api/v1/menus [get]
 func (c *menuController) FetchAll(ctx *gin.Context) {
@@ -93,8 +93,8 @@ func (c *menuController) FetchByID(ctx *gin.Context) {
 //	@Description	Register Menu to System
 //	@Produce		json
 //	@Param			MenuPayload	body		dto.MenuRequest	true	"Menu Register Payload"
-//	@Success		200				{object}	ginlib.Response		"OK"
-//	@Failure		500				{object}	ginlib.Response		"Internal Server Error"
+//	@Success		200			{object}	ginlib.Response	"OK"
+//	@Failure		500			{object}	ginlib.Response	"Internal Server Error"
 //	@Security		ApiKeyAuth
 //	@Router			/api/v1/menus [post]
 func (c *menuController) CreateMenu(ctx *gin.Context) {
@@ -131,10 +131,10 @@ func (c *menuController) CreateMenu(ctx *gin.Context) {
 //	@Description	Update Existing Menu
 //	@Produce		json
 //	@Param			MenuPayload	body		dto.MenuRequest	true	"Menu Update Payload"
-//	@Param			id				path		string								true	"Menu ID"
-//	@Success		200				{object}	ginlib.Response		"OK"
-// 	@Failure		404				{object}	ginlib.Response		"Item not found"
-//	@Failure		500				{object}	ginlib.Response		"Internal Server Error"
+//	@Param			id			path		string			true	"Menu ID"
+//	@Success		200			{object}	ginlib.Response	"OK"
+//	@Failure		404			{object}	ginlib.Response	"Item not found"
+//	@Failure		500			{object}	ginlib.Response	"Internal Server Error"
 //	@Security		ApiKeyAuth
 //	@Router			/api/v1/menus [put]
 func (c *menuController) UpdateMenu(ctx *gin.Context) {
@@ -172,10 +172,10 @@ func (c *menuController) UpdateMenu(ctx *gin.Context) {
 //	@Summary		Delete Menu
 //	@Description	Delete Existing Menu from System
 //	@Produce		json
-//	@Param			id				path		string								true	"Menu ID"
-//	@Success		200				{object}	ginlib.Response		"OK"
-// 	@Failure		404				{object}	ginlib.Response		"Item not found"
-//	@Failure		500				{object}	ginlib.Response		"Internal Server Error"
+//	@Param			id	path		string			true	"Menu ID"
+//	@Success		200	{object}	ginlib.Response	"OK"
+//	@Failure		404	{object}	ginlib.Response	"Item not found"
+//	@Failure		500	{object}	ginlib.Response	"Internal Server Error"
 //	@Security		ApiKeyAuth
 //	@Router			/api/v1/menus [delete]
 func (c *menuController) DeleteMenu(ctx *gin.Context) {
