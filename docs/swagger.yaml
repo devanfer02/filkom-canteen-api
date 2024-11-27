@@ -96,7 +96,7 @@ definitions:
       status:
         type: string
     type: object
-host: localhost:5700
+host: filkom-api.dvnnfrr.my.id
 info:
   contact: {}
   description: This is FILKOM Canteen API Documentation
@@ -795,6 +795,8 @@ paths:
       summary: Add Owner to Shop
       tags:
       - Shops
+schemes:
+- https
 securityDefinitions:
   ApiKeyAuth:
     description: 'API Key for accessing all endpoints. Type: Key TOKEN'

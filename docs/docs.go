@@ -1325,9 +1325,9 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "localhost:5700",
+	Host:             "filkom-api.dvnnfrr.my.id",
 	BasePath:         "",
-	Schemes:          []string{},
+	Schemes:          []string{"https"},
 	Title:            "FILKOM Canteen API",
 	Description:      "This is FILKOM Canteen API Documentation",
 	InfoInstanceName: "swagger",
