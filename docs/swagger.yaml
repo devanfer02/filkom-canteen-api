@@ -18,6 +18,25 @@ definitions:
       updated_at:
         type: string
     type: object
+  domain.Order:
+    properties:
+      created_at:
+        type: string
+      menu_id:
+        type: string
+      order_id:
+        type: string
+      payment_method:
+        type: string
+      payment_proof_link:
+        type: string
+      status:
+        type: string
+      updated_at:
+        type: string
+      user_id:
+        type: string
+    type: object
   domain.Owner:
     properties:
       created_at:
@@ -50,6 +69,8 @@ definitions:
     type: object
   dto.MenuRequest:
     type: object
+  dto.OrderRequest:
+    type: object
   dto.OwnerRequest:
     properties:
       fullname:
@@ -75,7 +96,7 @@ definitions:
       status:
         type: string
     type: object
-host: filkom-api.dvnnfrr.my.id
+host: localhost:5700
 info:
   contact: {}
   description: This is FILKOM Canteen API Documentation
@@ -234,6 +255,153 @@ paths:
       summary: Fetch Menu By ID
       tags:
       - Menus
+  /api/v1/orders:
+    delete:
+      description: Delete Existing Order from System
+      parameters:
+      - description: Order ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ginlib.Response'
+        "404":
+          description: Item not found
+          schema:
+            $ref: '#/definitions/ginlib.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ginlib.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete Order
+      tags:
+      - Orders
+    get:
+      description: Fetch All Orders From Database
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/ginlib.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/domain.Order'
+                  type: array
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ginlib.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Fetch All Orders
+      tags:
+      - Orders
+    post:
+      description: Register Order to System
+      parameters:
+      - description: Order Register Payload
+        in: body
+        name: OrderPayload
+        required: true
+        schema:
+          $ref: '#/definitions/dto.OrderRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ginlib.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ginlib.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Register Order
+      tags:
+      - Orders
+    put:
+      description: Update Existing Order
+      parameters:
+      - description: Order Update Payload
+        in: body
+        name: OrderPayload
+        required: true
+        schema:
+          $ref: '#/definitions/dto.OrderRequest'
+      - description: Order ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/ginlib.Response'
+        "404":
+          description: Item not found
+          schema:
+            $ref: '#/definitions/ginlib.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ginlib.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Update Order
+      tags:
+      - Orders
+  /api/v1/orders/{id}:
+    get:
+      description: Fetch Order By ID From DB
+      parameters:
+      - description: Order ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/ginlib.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/domain.Order'
+              type: object
+        "404":
+          description: Item not found
+          schema:
+            $ref: '#/definitions/ginlib.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/ginlib.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Fetch Order By ID
+      tags:
+      - Orders
   /api/v1/owners:
     get:
       description: Fetch All Owners From Database
@@ -627,8 +795,6 @@ paths:
       summary: Add Owner to Shop
       tags:
       - Shops
-schemes:
-- https
 securityDefinitions:
   ApiKeyAuth:
     description: 'API Key for accessing all endpoints. Type: Key TOKEN'
