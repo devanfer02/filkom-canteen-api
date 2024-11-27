@@ -27,7 +27,7 @@ func MountMenuRoutes(r *gin.RouterGroup, menuSvc service.IMenuService) {
 //	@Summary		Fetch All Menus
 //	@Description	Fetch All Menus From Database
 //	@Produce		json
-//	@Param			ShopID	query		string								true	"Shop ID"
+//	@Param			shop_id	query		string								false	"Shop ID"
 //	@Success		200		{object}	ginlib.Response{data=[]domain.Menu}	"OK"
 //	@Failure		500		{object}	ginlib.Response						"Internal Server Error"
 //	@Security		ApiKeyAuth

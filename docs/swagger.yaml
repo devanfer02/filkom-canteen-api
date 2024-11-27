@@ -134,6 +134,11 @@ paths:
       - Menus
     get:
       description: Fetch All Menus From Database
+      parameters:
+      - description: Shop ID
+        in: query
+        name: shop_id
+        type: string
       produces:
       - application/json
       responses:

@@ -30,6 +30,14 @@ const docTemplate = `{
                     "Menus"
                 ],
                 "summary": "Fetch All Menus",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Shop ID",
+                        "name": "shop_id",
+                        "in": "query"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
