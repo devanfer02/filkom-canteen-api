@@ -11,8 +11,8 @@ import (
 type LogInfo map[string]interface{}
 
 var (
-	logger       *logrus.Logger
-	once         sync.Once
+	logger      *logrus.Logger
+	once        sync.Once
 	currLogDate string
 )
 
@@ -34,8 +34,7 @@ func updateHook() {
 		logrus.ErrorLevel: "./internal/data/logs/" + currDate + ".log",
 	}
 
-	
-	logger.Hooks = make(logrus.LevelHooks) 
+	logger.Hooks = make(logrus.LevelHooks)
 	logger.Hooks.Add(lfshook.NewHook(
 		pathMap,
 		&logrus.JSONFormatter{},
@@ -47,7 +46,7 @@ func getLogger() *logrus.Logger {
 
 	updateHook()
 
-	return logger 
+	return logger
 }
 
 func Info(fields LogInfo, info string) {

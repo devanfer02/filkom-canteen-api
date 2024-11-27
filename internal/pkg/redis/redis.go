@@ -78,5 +78,5 @@ func (r *redisClient) Delete(ctx context.Context, key string) error {
 		return err
 	}
 
-	return nil 
+	return nil
 }

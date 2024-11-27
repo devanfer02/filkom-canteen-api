@@ -27,8 +27,9 @@ func MountMenuRoutes(r *gin.RouterGroup, menuSvc service.IMenuService) {
 //	@Summary		Fetch All Menus
 //	@Description	Fetch All Menus From Database
 //	@Produce		json
-//	@Success		200	{object}	ginlib.Response{data=[]domain.Menu}	"OK"
-//	@Failure		500	{object}	ginlib.Response						"Internal Server Error"
+//	@Param			ShopID	query		string								true	"Shop ID"
+//	@Success		200		{object}	ginlib.Response{data=[]domain.Menu}	"OK"
+//	@Failure		500		{object}	ginlib.Response						"Internal Server Error"
 //	@Security		ApiKeyAuth
 //	@Router			/api/v1/menus [get]
 func (c *menuController) FetchAll(ctx *gin.Context) {
@@ -38,13 +39,16 @@ func (c *menuController) FetchAll(ctx *gin.Context) {
 		message = "failed to fetch all menus"
 		menus   []domain.Menu
 		err     error
+		shopId  = ctx.Query("shop_id")
 	)
 
 	defer func() {
 		ginlib.SendResponse(ctx, code, status, message, menus, err)
 	}()
 
-	menus, err = c.menuSvc.FetchAllMenus()
+	menus, err = c.menuSvc.FetchAllMenus(&dto.MenuParams{
+		ShopID: shopId,
+	})
 	code, status = domain.GetStatus(err)
 
 	if err != nil {

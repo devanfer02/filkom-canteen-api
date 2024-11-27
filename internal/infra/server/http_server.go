@@ -43,15 +43,15 @@ func (h *httpServer) MountMiddlewares() {
 func (h *httpServer) MountControllers() {
 	v1 := h.app.Group("/api/v1")
 	redis := redis.NewRedisClient()
-	
 
-	url := ginSwagger.URL(env.AppEnv.AppUrl+ `/swagger/doc.json`)
+	url := ginSwagger.URL(env.AppEnv.AppUrl + `/swagger/doc.json`)
 
 	// repositories
 	shopRepo := repository.NewShowRepository(h.dbx)
 	ownerRepo := repository.NewOwnerRepository(h.dbx)
 	menuRepo := repository.NewMenuRepository(h.dbx)
 	roleRepo := repository.NewRoleRepository(h.dbx)
+	orderRepo := repository.NewOrderRepository(h.dbx)
 
 	// middlewares
 	mdlwr := middleware.NewMiddleware(redis, roleRepo)
@@ -60,12 +60,14 @@ func (h *httpServer) MountControllers() {
 	shopSvc := service.NewShopService(shopRepo)
 	ownerSvc := service.NewOwnerService(ownerRepo)
 	menuSvc := service.NewMenuService(menuRepo)
+	orderSvc := service.NewOrderService(orderRepo)
 
 	// controllers
 	controller.MountShopRoutes(v1, shopSvc)
 	controller.MountOwnerRoutes(v1, ownerSvc)
 	controller.MountMenuRoutes(v1, menuSvc)
-	
+	controller.MountOrderRoutes(v1, orderSvc)
+
 	h.app.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
 
 	h.app.GET("/hello", mdlwr.Authenticate(), mdlwr.AuthorizeAdmin("Owner"), func(ctx *gin.Context) {
@@ -79,7 +81,7 @@ func (h *httpServer) Start() {
 	}
 
 	if err := h.app.Run(env.AppEnv.AppPort); err != nil {
-		
+
 		log.Fatal(log.LogInfo{
 			"error": err.Error(),
 		}, "[HTTP SERVER][Start] failed to start server")

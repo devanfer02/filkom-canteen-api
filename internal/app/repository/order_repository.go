@@ -39,10 +39,25 @@ func (r *orderRepositoryImpl) FetchAll(params *dto.OrderParams) ([]domain.Order,
 		err    error
 	)
 
-	qb = sq.Select("*").
-		From(ORDER_TABLENAME)
+	qb = sq.Select(
+		"order_id",
+		"user_id",
+		"menu_id",
+		"payment_method",
+		"payment_proof_link",
+		"status",
+		"created_at",
+		"updated_at",
+	).From(ORDER_TABLENAME)
 
-	query, args, err = qb.ToSql()
+	if params.ShopID != "" {
+		qb = qb.
+			Join("menus ON menus.menu_id = orders.menu_id").
+			Join("shops ON shops.shop_id = menus.shop_id").
+			Where("shop_id = ?", params.ShopID)
+	}
+
+	query, args, err = qb.PlaceholderFormat(sq.Dollar).ToSql()
 
 	if err != nil {
 		log.Error(log.LogInfo{
@@ -110,7 +125,7 @@ func (r *orderRepositoryImpl) InsertOrder(order *domain.Order) error {
 
 	qbi = sq.
 		Insert(ORDER_TABLENAME).
-		Columns("user_id", "menu_id", "payment_method", "status", "payment_proof_link"). 
+		Columns("user_id", "menu_id", "payment_method", "status", "payment_proof_link").
 		Values(order.UserID, order.MenuID, order.PaymentMethod, order.Status, order.PaymentProofLink)
 
 	query, args, err = qbi.PlaceholderFormat(sq.Dollar).ToSql()
@@ -142,10 +157,10 @@ func (r *orderRepositoryImpl) UpdateOrder(params *dto.OrderParams, order *domain
 
 	qb = sq.
 		Update(ORDER_TABLENAME).
-		Set("status", order.Status). 
-		Set("payment_method", order.PaymentMethod). 
-		Set("payment_proof_link", order.PaymentProofLink). 
-		Set("updated_at", time.Now()). 
+		Set("status", order.Status).
+		Set("payment_method", order.PaymentMethod).
+		Set("payment_proof_link", order.PaymentProofLink).
+		Set("updated_at", time.Now()).
 		Where("order_id = ?", params.ID)
 
 	query, args, err = qb.PlaceholderFormat(sq.Dollar).ToSql()

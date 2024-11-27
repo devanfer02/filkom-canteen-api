@@ -25,14 +25,14 @@ func MountShopRoutes(r *gin.RouterGroup, shopSvc service.IShopService) {
 	shopR.DELETE("/:id", shopCtr.DeleteShop)
 }
 
-//	@Tags			Shops
-//	@Summary		Fetch All Shops
-//	@Description	Fetch All Shops From Database
-//	@Produce		json
-//	@Success		200	{object}	ginlib.Response{data=[]domain.Shop}	"OK"
-//	@Failure		500	{object}	ginlib.Response						"Internal Server Error"
-//	@Security		ApiKeyAuth
-//	@Router			/api/v1/shops [get]
+// @Tags			Shops
+// @Summary		Fetch All Shops
+// @Description	Fetch All Shops From Database
+// @Produce		json
+// @Success		200	{object}	ginlib.Response{data=[]domain.Shop}	"OK"
+// @Failure		500	{object}	ginlib.Response						"Internal Server Error"
+// @Security		ApiKeyAuth
+// @Router			/api/v1/shops [get]
 func (c *shopController) FetchAllShops(ctx *gin.Context) {
 	var (
 		code    = 500
@@ -57,16 +57,16 @@ func (c *shopController) FetchAllShops(ctx *gin.Context) {
 
 }
 
-//	@Tags			Shops
-//	@Summary		Fetch Shop By ID
-//	@Description	Fetch Shop By ID From DB
-//	@Produce		json
-//	@Param			id	path		string								true	"Shop ID"
-//	@Success		200	{object}	ginlib.Response{data=domain.Shop}	"OK"
-//	@Failure		404	{object}	ginlib.Response{data=domain.Shop}	"Item not found"
-//	@Failure		500	{object}	ginlib.Response						"Internal Server Error"
-//	@Security		ApiKeyAuth
-//	@Router			/api/v1/shops/{id} [get]
+// @Tags			Shops
+// @Summary		Fetch Shop By ID
+// @Description	Fetch Shop By ID From DB
+// @Produce		json
+// @Param			id	path		string								true	"Shop ID"
+// @Success		200	{object}	ginlib.Response{data=domain.Shop}	"OK"
+// @Failure		404	{object}	ginlib.Response{data=domain.Shop}	"Item not found"
+// @Failure		500	{object}	ginlib.Response						"Internal Server Error"
+// @Security		ApiKeyAuth
+// @Router			/api/v1/shops/{id} [get]
 func (c *shopController) FetchShopByID(ctx *gin.Context) {
 	var (
 		code    = 500
@@ -93,15 +93,15 @@ func (c *shopController) FetchShopByID(ctx *gin.Context) {
 	message = "successfully fetch shop by id"
 }
 
-//	@Tags			Shops
-//	@Summary		Register Shop
-//	@Description	Register Shop to System
-//	@Produce		json
-//	@Param			ShopPayload	body		dto.ShopRequest	true	"Shop Register Payload"
-//	@Success		200			{object}	ginlib.Response	"OK"
-//	@Failure		500			{object}	ginlib.Response	"Internal Server Error"
-//	@Security		ApiKeyAuth
-//	@Router			/api/v1/shops [post]
+// @Tags			Shops
+// @Summary		Register Shop
+// @Description	Register Shop to System
+// @Produce		json
+// @Param			ShopPayload	body		dto.ShopRequest	true	"Shop Register Payload"
+// @Success		200			{object}	ginlib.Response	"OK"
+// @Failure		500			{object}	ginlib.Response	"Internal Server Error"
+// @Security		ApiKeyAuth
+// @Router			/api/v1/shops [post]
 func (c *shopController) CreateShop(ctx *gin.Context) {
 	var (
 		code    = 400
@@ -130,17 +130,17 @@ func (c *shopController) CreateShop(ctx *gin.Context) {
 	message = "successfully create new shop"
 }
 
-//	@Tags			Shops
-//	@Summary		Add Owner to Shop
-//	@Description	Add Owner to Shop
-//	@Produce		json
-//	@Param			id		path		string			true	"Shop ID"
-//	@Param			ownerId	path		string			true	"Owner ID"
-//	@Success		200		{object}	ginlib.Response	"OK"
-//	@Failure		404		{object}	ginlib.Response	"Shop or Owner not found"
-//	@Failure		500		{object}	ginlib.Response	"Internal Server Error"
-//	@Security		ApiKeyAuth
-//	@Router			/api/v1/shops/{id}/owners/{ownerId} [post]
+// @Tags			Shops
+// @Summary		Add Owner to Shop
+// @Description	Add Owner to Shop
+// @Produce		json
+// @Param			id		path		string			true	"Shop ID"
+// @Param			ownerId	path		string			true	"Owner ID"
+// @Success		200		{object}	ginlib.Response	"OK"
+// @Failure		404		{object}	ginlib.Response	"Shop or Owner not found"
+// @Failure		500		{object}	ginlib.Response	"Internal Server Error"
+// @Security		ApiKeyAuth
+// @Router			/api/v1/shops/{id}/owners/{ownerId} [post]
 func (c *shopController) AssignOwner(ctx *gin.Context) {
 	var (
 		code         = 400
@@ -169,17 +169,17 @@ func (c *shopController) AssignOwner(ctx *gin.Context) {
 	message = "successfully assigned owner to shop"
 }
 
-//	@Tags			Shops
-//	@Summary		Remove Owner from Shop
-//	@Description	Remove Owner from Shop
-//	@Produce		json  
-//	@Param			id		path		string			true	"Shop ID"
-//	@Param			ownerId	path		string			true	"Owner ID"
-//	@Success		200		{object}	ginlib.Response	"OK"
-//	@Failure		404		{object}	ginlib.Response	"Item not found"
-//	@Failure		500		{object}	ginlib.Response	"Internal Server Error"
-//	@Security		ApiKeyAuth
-//	@Router			/api/v1/shops/{id}/owners/{ownerId} [delete]
+// @Tags			Shops
+// @Summary		Remove Owner from Shop
+// @Description	Remove Owner from Shop
+// @Produce		json
+// @Param			id		path		string			true	"Shop ID"
+// @Param			ownerId	path		string			true	"Owner ID"
+// @Success		200		{object}	ginlib.Response	"OK"
+// @Failure		404		{object}	ginlib.Response	"Item not found"
+// @Failure		500		{object}	ginlib.Response	"Internal Server Error"
+// @Security		ApiKeyAuth
+// @Router			/api/v1/shops/{id}/owners/{ownerId} [delete]
 func (c *shopController) RemoveOwner(ctx *gin.Context) {
 	var (
 		code         = 400
@@ -208,18 +208,18 @@ func (c *shopController) RemoveOwner(ctx *gin.Context) {
 	message = "successfully remove owner from shop"
 }
 
-//	@Tags			Shops
-//	@Summary		Update Shop
-//	@Description	Update Existing Shop
-//	@Produce		json
-//	@Param			ShopPayload	body		dto.ShopRequest						true	"Shop Register Payload"
-//	@Param			id			path		string								true	"Shop ID"
-//	@Success		200			{object}	ginlib.Response						"OK"
-//	@Failure		404			{object}	ginlib.Response{data=domain.Shop}	"Item not found"
-//	@Failure		409			{object}	ginlib.Response						"Username already exists"
-//	@Failure		500			{object}	ginlib.Response						"Internal Server Error"
-//	@Security		ApiKeyAuth
-//	@Router			/api/v1/shops/{id} [put]
+// @Tags			Shops
+// @Summary		Update Shop
+// @Description	Update Existing Shop
+// @Produce		json
+// @Param			ShopPayload	body		dto.ShopRequest						true	"Shop Register Payload"
+// @Param			id			path		string								true	"Shop ID"
+// @Success		200			{object}	ginlib.Response						"OK"
+// @Failure		404			{object}	ginlib.Response{data=domain.Shop}	"Item not found"
+// @Failure		409			{object}	ginlib.Response						"Username already exists"
+// @Failure		500			{object}	ginlib.Response						"Internal Server Error"
+// @Security		ApiKeyAuth
+// @Router			/api/v1/shops/{id} [put]
 func (c *shopController) UpdateShop(ctx *gin.Context) {
 	var (
 		code    = 400
@@ -249,16 +249,16 @@ func (c *shopController) UpdateShop(ctx *gin.Context) {
 	message = "successfully update shop"
 }
 
-//	@Tags			Shops
-//	@Summary		Delete Shop
-//	@Description	Delete Existing Shop
-//	@Produce		json
-//	@Param			id	path		string			true	"Shop ID"
-//	@Success		200	{object}	ginlib.Response	"OK"
-//	@Failure		404	{object}	ginlib.Response	"Item not found"
-//	@Failure		500	{object}	ginlib.Response	"Internal Server Error"
-//	@Security		ApiKeyAuth
-//	@Router			/api/v1/shops/{id} [delete]
+// @Tags			Shops
+// @Summary		Delete Shop
+// @Description	Delete Existing Shop
+// @Produce		json
+// @Param			id	path		string			true	"Shop ID"
+// @Success		200	{object}	ginlib.Response	"OK"
+// @Failure		404	{object}	ginlib.Response	"Item not found"
+// @Failure		500	{object}	ginlib.Response	"Internal Server Error"
+// @Security		ApiKeyAuth
+// @Router			/api/v1/shops/{id} [delete]
 func (c *shopController) DeleteShop(ctx *gin.Context) {
 	var (
 		code    = 400

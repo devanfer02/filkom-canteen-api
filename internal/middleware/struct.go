@@ -6,7 +6,7 @@ import (
 )
 
 type Middleware struct {
-	redis redis.RedisInterface	
+	redis    redis.RedisInterface
 	roleRepo repository.IRoleRepository
 }
 

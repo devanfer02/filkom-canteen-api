@@ -168,17 +168,17 @@ func (r *shopRepositoryImpl) DeleteShopOwner(params *dto.ShopParams) error {
 		args  []any
 	)
 
-	qb = sq. 
-		Delete("shop_owners"). 
+	qb = sq.
+		Delete("shop_owners").
 		Where("shop_id = ? AND admin_id = ?", params.ID, params.OwnerID)
-	
+
 	query, args, err = qb.PlaceholderFormat(sq.Dollar).ToSql()
 
 	if err != nil {
 		log.Error(log.LogInfo{
 			"error": err.Error(),
 		}, "[SHOP REPOSITORY][DeleteShopOwner] failed to convert query builder to sql")
-		return err	
+		return err
 	}
 
 	res, err := r.conn.Exec(query, args...)

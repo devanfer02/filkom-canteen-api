@@ -33,15 +33,15 @@ func NewOwnerRepository(conn *sqlx.DB) IOwnerRepository {
 
 func (r *ownerRepositoryImpl) FetchAll(params *dto.OwnerParams) ([]domain.Owner, error) {
 	var (
-		qb    sq.SelectBuilder
-		query string
-		args  []interface{}
+		qb     sq.SelectBuilder
+		query  string
+		args   []interface{}
 		owners []domain.Owner = make([]domain.Owner, 0)
-		err   error
+		err    error
 	)
 
-	qb = sq.Select("admin_id", "fullname", "wa_number", "username", "password", "created_at", "updated_at"). 
-		From(OWNER_TABLENAME). 
+	qb = sq.Select("admin_id", "fullname", "wa_number", "username", "password", "created_at", "updated_at").
+		From(OWNER_TABLENAME).
 		Join("roles ON roles.role_id = admins.role_id").
 		Where("roles.role_name = ?", "Owner")
 
@@ -51,7 +51,7 @@ func (r *ownerRepositoryImpl) FetchAll(params *dto.OwnerParams) ([]domain.Owner,
 		log.Error(log.LogInfo{
 			"error": err.Error(),
 		}, "[OWNER REPOSITORY][FetchAll] failed to convert query builder to sql")
-		return nil, err	
+		return nil, err
 	}
 
 	if err = r.conn.Select(&owners, query, args...); err != nil {
@@ -59,10 +59,10 @@ func (r *ownerRepositoryImpl) FetchAll(params *dto.OwnerParams) ([]domain.Owner,
 			"error": err.Error(),
 		}, "[OWNER REPOSITORY][FetchAll] failed to fetch owners")
 
-		return nil, err 
-	} 
+		return nil, err
+	}
 
-	return owners, nil 
+	return owners, nil
 }
 
 func (r *ownerRepositoryImpl) FetchByID(params *dto.OwnerParams) (*domain.Owner, error) {
@@ -74,10 +74,10 @@ func (r *ownerRepositoryImpl) FetchByID(params *dto.OwnerParams) (*domain.Owner,
 		err   error
 	)
 
-	qb = sq.Select("admin_id", "fullname", "wa_number", "username", "password", "created_at", "updated_at"). 
+	qb = sq.Select("admin_id", "fullname", "wa_number", "username", "password", "created_at", "updated_at").
 		From(OWNER_TABLENAME).
 		Join("roles ON roles.role_id = admins.role_id").
-		Where("admin_id = ? AND roles.role_name = ?", params.ID, "Owner"). 
+		Where("admin_id = ? AND roles.role_name = ?", params.ID, "Owner").
 		Limit(1)
 
 	query, args, err = qb.PlaceholderFormat(sq.Dollar).ToSql()
@@ -98,16 +98,16 @@ func (r *ownerRepositoryImpl) FetchByID(params *dto.OwnerParams) (*domain.Owner,
 			"error": err.Error(),
 		}, "[OWNER REPOSITORY][FetchByID] failed to fetch owner by id")
 
-		return nil, err 
+		return nil, err
 	}
 
-	return &owner, nil 
+	return &owner, nil
 }
 
 func (r *ownerRepositoryImpl) InsertOwner(owner *domain.Owner) error {
 	var (
-		qbi    sq.InsertBuilder
-		qbs    sq.SelectBuilder
+		qbi   sq.InsertBuilder
+		qbs   sq.SelectBuilder
 		query string
 		err   error
 		args  []any
@@ -117,7 +117,7 @@ func (r *ownerRepositoryImpl) InsertOwner(owner *domain.Owner) error {
 	qbs = sq.
 		Select("*").
 		From("roles").
-		Where("role_name = ?", "Owner"). 
+		Where("role_name = ?", "Owner").
 		Limit(1)
 
 	query, args, _ = qbs.PlaceholderFormat(sq.Dollar).ToSql()
@@ -178,7 +178,7 @@ func (r *ownerRepositoryImpl) UpdateOwner(params *dto.OwnerParams, owner *domain
 	if owner.Password != "" {
 		qb = qb.Set("password", owner.Password)
 	}
-		
+
 	qb = qb.Where("admin_id = ?", params.ID)
 
 	query, args, err = qb.PlaceholderFormat(sq.Dollar).ToSql()
@@ -209,10 +209,10 @@ func (r *ownerRepositoryImpl) UpdateOwner(params *dto.OwnerParams, owner *domain
 
 func (r *ownerRepositoryImpl) DeleteOwner(params *dto.OwnerParams) error {
 	var (
-		qb sq.DeleteBuilder
-		query string 
-		args []interface{}
-		err error 
+		qb    sq.DeleteBuilder
+		query string
+		args  []interface{}
+		err   error
 	)
 
 	qb = sq.
@@ -220,7 +220,6 @@ func (r *ownerRepositoryImpl) DeleteOwner(params *dto.OwnerParams) error {
 		Where("admin_id = ?", params.ID)
 
 	query, args, err = qb.PlaceholderFormat(sq.Dollar).ToSql()
-
 
 	if err != nil {
 		log.Error(log.LogInfo{

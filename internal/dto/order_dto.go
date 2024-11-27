@@ -6,6 +6,7 @@ type OrderParams struct {
 	ID     string
 	UserID string
 	MenuID string
+	ShopID string
 }
 
 type OrderRequest struct {

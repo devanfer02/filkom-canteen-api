@@ -23,11 +23,11 @@ func NewRoleRepository(conn *sqlx.DB) IRoleRepository {
 
 func (r *roleRepositoryImpl) FetchOne(name string) (*domain.Role, error) {
 	var (
-		qb sq.SelectBuilder
-		query string 
-		args []any
-		role domain.Role
-		err error 
+		qb    sq.SelectBuilder
+		query string
+		args  []any
+		role  domain.Role
+		err   error
 	)
 
 	qb = sq.Select("*").From(ROLE_TABLENAME).Where("role_name = ?", name).Limit(1)
@@ -38,15 +38,15 @@ func (r *roleRepositoryImpl) FetchOne(name string) (*domain.Role, error) {
 		log.Error(log.LogInfo{
 			"error": err.Error(),
 		}, "[ROLE REPOSITORY][FetchOne] failed to fetch role")
-		return nil, err 
+		return nil, err
 	}
 
 	if err = r.conn.Get(&role, query, args...); err != nil {
 		log.Error(log.LogInfo{
 			"error": err.Error(),
 		}, "[ROLE REPOSITORY][FetchOne] failed to fetch role")
-		return nil, err 
+		return nil, err
 	}
 
-	return &role, nil 
+	return &role, nil
 }

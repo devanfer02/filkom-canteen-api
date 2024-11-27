@@ -56,7 +56,7 @@ func ValidateToken(tokenReq string) (*Issuer, error) {
 	issuer = &Issuer{
 		UserID: claims.UserID,
 		Issuer: claims.Issuer,
-		Role: claims.Role,
+		Role:   claims.Role,
 	}
 
 	return issuer, nil

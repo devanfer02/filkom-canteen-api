@@ -12,29 +12,29 @@ import (
 func APIKey() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		var (
-			header string 
-			code int = 400 
-			status string = "fail"
-			message = "failed to authenticate request"
-			err error = nil 
+			header  string
+			code    int    = 400
+			status  string = "fail"
+			message        = "failed to authenticate request"
+			err     error  = nil
 		)
 
-		defer func ()  {
-			ginlib.SendAbortResponse(ctx, code, status, message, err)	
+		defer func() {
+			ginlib.SendAbortResponse(ctx, code, status, message, err)
 		}()
 
 		header = ctx.GetHeader("x-api-key")
 
 		if header == "" {
 			err = errors.New("invalid api key")
-			return 
+			return
 		}
 
 		split := strings.Split(header, " ")
 
 		if len(split) < 2 {
 			err = errors.New("invalid api key")
-			return 
+			return
 		}
 
 		if split[1] != env.AppEnv.ApiKey {

@@ -13,8 +13,8 @@ type IOwnerService interface {
 	FetchAllOwners() ([]domain.Owner, error)
 	FetchOwnerByID(params *dto.OwnerParams) (*domain.Owner, error)
 	CreateOwner(req *dto.OwnerRequest) error
-	UpdateOwner(params *dto.OwnerParams,req *dto.OwnerRequest) error
-	DeleteOwner(params *dto.OwnerParams) error	
+	UpdateOwner(params *dto.OwnerParams, req *dto.OwnerRequest) error
+	DeleteOwner(params *dto.OwnerParams) error
 }
 
 type ownerServiceImpl struct {
@@ -25,23 +25,23 @@ func NewOwnerService(ownerRepo repository.IOwnerRepository) IOwnerService {
 	return &ownerServiceImpl{ownerRepo}
 }
 
-func(s *ownerServiceImpl) FetchAllOwners() ([]domain.Owner, error) {
+func (s *ownerServiceImpl) FetchAllOwners() ([]domain.Owner, error) {
 	owners, err := s.ownerRepo.FetchAll(&dto.OwnerParams{})
 
-	return owners, err 
+	return owners, err
 }
 
-func(s *ownerServiceImpl) FetchOwnerByID(params *dto.OwnerParams) (*domain.Owner, error) {
+func (s *ownerServiceImpl) FetchOwnerByID(params *dto.OwnerParams) (*domain.Owner, error) {
 	if _, err := uuid.Parse(params.ID); err != nil {
 		return nil, domain.ErrBadRequest
 	}
 
 	owner, err := s.ownerRepo.FetchByID(params)
 
-	return owner, err 
+	return owner, err
 }
 
-func(s *ownerServiceImpl) CreateOwner(req *dto.OwnerRequest) error {
+func (s *ownerServiceImpl) CreateOwner(req *dto.OwnerRequest) error {
 	var (
 		err error
 	)
@@ -52,9 +52,8 @@ func(s *ownerServiceImpl) CreateOwner(req *dto.OwnerRequest) error {
 		log.Error(log.LogInfo{
 			"error": err.Error(),
 		}, "[BLOG SERVICE][CreateOwner] failed to create owner")
-		return err 
+		return err
 	}
-
 
 	err = s.ownerRepo.InsertOwner(&domain.Owner{
 		Fullname: req.Fullname,
@@ -63,10 +62,10 @@ func(s *ownerServiceImpl) CreateOwner(req *dto.OwnerRequest) error {
 		WANumber: req.WANumber,
 	})
 
-	return err 
+	return err
 }
 
-func(s *ownerServiceImpl) UpdateOwner(params *dto.OwnerParams,req *dto.OwnerRequest) error {
+func (s *ownerServiceImpl) UpdateOwner(params *dto.OwnerParams, req *dto.OwnerRequest) error {
 	var (
 		err error
 	)
@@ -78,8 +77,8 @@ func(s *ownerServiceImpl) UpdateOwner(params *dto.OwnerParams,req *dto.OwnerRequ
 			log.Error(log.LogInfo{
 				"error": err.Error(),
 			}, "[BLOG SERVICE][CreateOwner] failed to create owner")
-			return err 
-		}	
+			return err
+		}
 	}
 
 	err = s.ownerRepo.UpdateOwner(params, &domain.Owner{
@@ -89,11 +88,11 @@ func(s *ownerServiceImpl) UpdateOwner(params *dto.OwnerParams,req *dto.OwnerRequ
 		WANumber: req.WANumber,
 	})
 
-	return nil 
+	return nil
 }
 
-func(s *ownerServiceImpl) DeleteOwner(params *dto.OwnerParams) error {
+func (s *ownerServiceImpl) DeleteOwner(params *dto.OwnerParams) error {
 	err := s.ownerRepo.DeleteOwner(params)
 
-	return err 
+	return err
 }

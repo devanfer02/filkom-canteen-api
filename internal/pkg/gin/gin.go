@@ -43,7 +43,7 @@ func SendAbortResponse(
 	ctx *gin.Context,
 	code int,
 	status, message string,
-	err error,	
+	err error,
 ) {
 	SendResponse(ctx, code, status, message, nil, err)
 	ctx.Abort()

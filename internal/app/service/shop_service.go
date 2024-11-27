@@ -13,7 +13,7 @@ type IShopService interface {
 	CreateShop(req *dto.ShopRequest) error
 	AddOwner(req *dto.ShopParams) error
 	RemoveOwner(req *dto.ShopParams) error
-	UpdateShop(params *dto.ShopParams,req *dto.ShopRequest) error
+	UpdateShop(params *dto.ShopParams, req *dto.ShopRequest) error
 	DeleteShop(params *dto.ShopParams) error
 }
 
@@ -54,16 +54,16 @@ func (s *shopServiceImpl) CreateShop(req *dto.ShopRequest) error {
 func (s *shopServiceImpl) AddOwner(req *dto.ShopParams) error {
 	err := s.shopRepo.InsertShopOwner(req)
 
-	return err 
+	return err
 }
 
 func (s *shopServiceImpl) RemoveOwner(req *dto.ShopParams) error {
 	err := s.shopRepo.DeleteShopOwner(req)
 
-	return err 
+	return err
 }
 
-func (s *shopServiceImpl) UpdateShop(params *dto.ShopParams,req *dto.ShopRequest) error {
+func (s *shopServiceImpl) UpdateShop(params *dto.ShopParams, req *dto.ShopRequest) error {
 	err := s.shopRepo.UpdateShop(params, &domain.Shop{
 		Name:        req.Name,
 		Description: req.Description,

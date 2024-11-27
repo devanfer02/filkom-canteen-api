@@ -6,7 +6,7 @@ var (
 	ErrNotFound       = errors.New("item not found")
 	ErrBadRequest     = errors.New("bad data request")
 	ErrDuplicateEntry = errors.New("duplicate item entry")
-	ErrInvalidToken		= errors.New("invalid token")
+	ErrInvalidToken   = errors.New("invalid token")
 )
 
 func GetStatus(err error) (int, string) {

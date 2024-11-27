@@ -15,10 +15,10 @@ import (
 func (m *Middleware) Authenticate() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		var (
-			code = 400
-			status = "fail"
-			message = "failed to authenticate user"
-			err error = nil 
+			code          = 400
+			status        = "fail"
+			message       = "failed to authenticate user"
+			err     error = nil
 		)
 
 		bearer := ctx.GetHeader("Authorization")
@@ -29,20 +29,20 @@ func (m *Middleware) Authenticate() gin.HandlerFunc {
 			}
 		}()
 
-		if bearer == "" {	
+		if bearer == "" {
 			err = errors.New("failed to get bearer token")
 			return
 		}
-	
+
 		splitted := strings.Split(bearer, " ")
-	
+
 		if len(splitted) < 2 {
 			err = errors.New("failed to validate token")
 			return
 		}
-	
+
 		tokenString := splitted[1]
-	
+
 		issuer, err := jwt.ValidateToken(tokenString)
 		if err != nil {
 			err = errors.New("failed to validate token")
@@ -51,22 +51,21 @@ func (m *Middleware) Authenticate() gin.HandlerFunc {
 
 		if issuer.Issuer != env.AppEnv.JWTUserRole && issuer.Issuer != env.AppEnv.JWTAdminRole {
 			err = errors.New("failed to validate token")
-			return 
+			return
 		}
 
-	
 		val, err := m.redis.Get(ctx.Request.Context(), tokenString)
-	
+
 		if err != nil {
 			err = errors.New("token expired")
 			return
 		}
-	
+
 		if val != "" {
 			err = errors.New("token expired")
 			return
 		}
-	
+
 		ctx.Set("id", issuer.UserID)
 		ctx.Set("user", issuer.Issuer)
 		ctx.Set("role", issuer.Role)
@@ -77,11 +76,11 @@ func (m *Middleware) Authenticate() gin.HandlerFunc {
 func (m *Middleware) AuthorizeAdmin(roleName string) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		var (
-			err error 
-			code = 401
-			status = "fail"
+			err     error
+			code    = 401
+			status  = "fail"
 			message = "unauthorized"
-			role *domain.Role
+			role    *domain.Role
 		)
 
 		role, err = m.roleRepo.FetchOne(roleName)
@@ -94,16 +93,16 @@ func (m *Middleware) AuthorizeAdmin(roleName string) gin.HandlerFunc {
 
 		if err != nil {
 			err = errors.New("failed to authorize")
-			return 
+			return
 		}
 
 		if role.ID != ctx.GetString("role") {
 			log.Info(log.LogInfo{
-				"role_db": role.ID,
+				"role_db":  role.ID,
 				"role_ctx": ctx.GetString("role"),
 			}, "LOGGED")
 			err = errors.New("unauthorized")
-			return 
+			return
 		}
 
 		ctx.Next()

@@ -23,21 +23,20 @@ func MountOrderRoutes(r *gin.RouterGroup, orderSvc service.IOrderService) {
 	orderR.DELETE("/:id", orderCtr.DeleteOrder)
 }
 
-
-//	@Tags			Orders
-//	@Summary		Fetch All Orders
-//	@Description	Fetch All Orders From Database
-//	@Produce		json
-//	@Success		200	{object}	ginlib.Response{data=[]domain.Order}	"OK"
-//	@Failure		500	{object}	ginlib.Response							"Internal Server Error"
-//	@Security		ApiKeyAuth
-//	@Router			/api/v1/orders [get]
+// @Tags			Orders
+// @Summary		Fetch All Orders
+// @Description	Fetch All Orders From Database
+// @Produce		json
+// @Success		200	{object}	ginlib.Response{data=[]domain.Order}	"OK"
+// @Failure		500	{object}	ginlib.Response							"Internal Server Error"
+// @Security		ApiKeyAuth
+// @Router			/api/v1/orders [get]
 func (c *orderController) FetchAll(ctx *gin.Context) {
 	var (
 		code    = 500
 		status  = "fail"
 		message = "failed to fetch all orders"
-		orders   []domain.Order
+		orders  []domain.Order
 		err     error
 	)
 
@@ -55,22 +54,22 @@ func (c *orderController) FetchAll(ctx *gin.Context) {
 	message = "successfully fetch all orders"
 }
 
-//	@Tags			Orders
-//	@Summary		Fetch Order By ID
-//	@Description	Fetch Order By ID From DB
-//	@Produce		json
-//	@Param			id	path		string								true	"Order ID"
-//	@Success		200	{object}	ginlib.Response{data=domain.Order}	"OK"
-//	@Failure		404	{object}	ginlib.Response						"Item not found"
-//	@Failure		500	{object}	ginlib.Response						"Internal Server Error"
-//	@Security		ApiKeyAuth
-//	@Router			/api/v1/orders/{id} [get]
+// @Tags			Orders
+// @Summary		Fetch Order By ID
+// @Description	Fetch Order By ID From DB
+// @Produce		json
+// @Param			id	path		string								true	"Order ID"
+// @Success		200	{object}	ginlib.Response{data=domain.Order}	"OK"
+// @Failure		404	{object}	ginlib.Response						"Item not found"
+// @Failure		500	{object}	ginlib.Response						"Internal Server Error"
+// @Security		ApiKeyAuth
+// @Router			/api/v1/orders/{id} [get]
 func (c *orderController) FetchByID(ctx *gin.Context) {
 	var (
 		code    = 500
 		status  = "fail"
 		message = "failed to fetch order"
-		order    *domain.Order
+		order   *domain.Order
 		err     error
 		idParam = ctx.Param("id")
 	)
@@ -89,21 +88,21 @@ func (c *orderController) FetchByID(ctx *gin.Context) {
 	message = "successfully fetch order"
 }
 
-//	@Tags			Orders
-//	@Summary		Register Order
-//	@Description	Register Order to System
-//	@Produce		json
-//	@Param			OrderPayload	body		dto.OrderRequest	true	"Order Register Payload"
-//	@Success		200				{object}	ginlib.Response		"OK"
-//	@Failure		500				{object}	ginlib.Response		"Internal Server Error"
-//	@Security		ApiKeyAuth
-//	@Router			/api/v1/orders [post]
+// @Tags			Orders
+// @Summary		Register Order
+// @Description	Register Order to System
+// @Produce		json
+// @Param			OrderPayload	body		dto.OrderRequest	true	"Order Register Payload"
+// @Success		200				{object}	ginlib.Response		"OK"
+// @Failure		500				{object}	ginlib.Response		"Internal Server Error"
+// @Security		ApiKeyAuth
+// @Router			/api/v1/orders [post]
 func (c *orderController) CreateOrder(ctx *gin.Context) {
 	var (
 		code    = 500
 		status  = "fail"
 		message = "failed to fetch order"
-		order    dto.OrderRequest
+		order   dto.OrderRequest
 		err     error
 	)
 
@@ -127,23 +126,23 @@ func (c *orderController) CreateOrder(ctx *gin.Context) {
 
 }
 
-//	@Tags			Orders
-//	@Summary		Update Order
-//	@Description	Update Existing Order
-//	@Produce		json
-//	@Param			OrderPayload	body		dto.OrderRequest	true	"Order Update Payload"
-//	@Param			id				path		string				true	"Order ID"
-//	@Success		200				{object}	ginlib.Response		"OK"
-//	@Failure		404				{object}	ginlib.Response		"Item not found"
-//	@Failure		500				{object}	ginlib.Response		"Internal Server Error"
-//	@Security		ApiKeyAuth
-//	@Router			/api/v1/orders [put]
+// @Tags			Orders
+// @Summary		Update Order
+// @Description	Update Existing Order
+// @Produce		json
+// @Param			OrderPayload	body		dto.OrderRequest	true	"Order Update Payload"
+// @Param			id				path		string				true	"Order ID"
+// @Success		200				{object}	ginlib.Response		"OK"
+// @Failure		404				{object}	ginlib.Response		"Item not found"
+// @Failure		500				{object}	ginlib.Response		"Internal Server Error"
+// @Security		ApiKeyAuth
+// @Router			/api/v1/orders [put]
 func (c *orderController) UpdateOrder(ctx *gin.Context) {
 	var (
 		code    = 500
 		status  = "fail"
 		message = "failed to fetch order"
-		order    dto.OrderRequest
+		order   dto.OrderRequest
 		err     error
 		idParam = ctx.Param("id")
 	)
@@ -169,16 +168,16 @@ func (c *orderController) UpdateOrder(ctx *gin.Context) {
 	message = "successfully update order"
 }
 
-//	@Tags			Orders
-//	@Summary		Delete Order
-//	@Description	Delete Existing Order from System
-//	@Produce		json
-//	@Param			id	path		string			true	"Order ID"
-//	@Success		200	{object}	ginlib.Response	"OK"
-//	@Failure		404	{object}	ginlib.Response	"Item not found"
-//	@Failure		500	{object}	ginlib.Response	"Internal Server Error"
-//	@Security		ApiKeyAuth
-//	@Router			/api/v1/orders [delete]
+// @Tags			Orders
+// @Summary		Delete Order
+// @Description	Delete Existing Order from System
+// @Produce		json
+// @Param			id	path		string			true	"Order ID"
+// @Success		200	{object}	ginlib.Response	"OK"
+// @Failure		404	{object}	ginlib.Response	"Item not found"
+// @Failure		500	{object}	ginlib.Response	"Internal Server Error"
+// @Security		ApiKeyAuth
+// @Router			/api/v1/orders [delete]
 func (c *orderController) DeleteOrder(ctx *gin.Context) {
 	var (
 		code    = 500

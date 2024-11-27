@@ -2,6 +2,7 @@ package repository
 
 import (
 	"database/sql"
+	"strings"
 	"time"
 
 	sq "github.com/Masterminds/squirrel"
@@ -32,17 +33,31 @@ func NewMenuRepository(conn *sqlx.DB) IMenuRepository {
 
 func (r *menuRepositoryImpl) FetchAll(params *dto.MenuParams) ([]domain.Menu, error) {
 	var (
-		qb     sq.SelectBuilder
-		query  string
-		args   []interface{}
+		qb    sq.SelectBuilder
+		query string
+		args  []interface{}
 		menus []domain.Menu = make([]domain.Menu, 0)
-		err    error
+		err   error
 	)
 
-	qb = sq.Select("*").
-		From(MENU_TABLENAME)
+	qb = sq.Select(
+		"menu_id",
+		"menu_name",
+		"menus.shop_id AS menu_shop_id",
+		"menu_price",
+		"menu_status",
+		"menu_photo_link",
+		"menus.created_at AS created_at",
+		"menus.updated_at AS updated_at",
+	).From(MENU_TABLENAME)
 
-	query, args, err = qb.ToSql()
+	if params.ShopID != "" {
+		qb = qb.
+			Join("shops ON shops.shop_id = menus.shop_id").
+			Where("shops.shop_id = ?", params.ShopID)
+	}
+
+	query, args, err = qb.PlaceholderFormat(sq.Dollar).ToSql()
 
 	if err != nil {
 		log.Error(log.LogInfo{
@@ -54,6 +69,7 @@ func (r *menuRepositoryImpl) FetchAll(params *dto.MenuParams) ([]domain.Menu, er
 	if err = r.conn.Select(&menus, query, args...); err != nil {
 		log.Error(log.LogInfo{
 			"error": err.Error(),
+			"query": query,
 		}, "[MENU REPOSITORY][FetchAll] failed to fetch menus")
 
 		return nil, err
@@ -67,12 +83,20 @@ func (r *menuRepositoryImpl) FetchByID(params *dto.MenuParams) (*domain.Menu, er
 		qb    sq.SelectBuilder
 		query string
 		args  []interface{}
-		menu domain.Menu
+		menu  domain.Menu
 		err   error
 	)
 
-	qb = sq.Select("*").
-		From(MENU_TABLENAME).
+	qb = sq.Select(
+		"menu_id",
+		"menu_name",
+		"menus.shop_id AS menu_shop_id",
+		"menu_price",
+		"menu_status",
+		"menu_photo_link",
+		"created_at",
+		"updated_at",
+	).From(MENU_TABLENAME).
 		Where("menu_id = ?", params.ID).
 		Limit(1)
 
@@ -110,7 +134,7 @@ func (r *menuRepositoryImpl) InsertMenu(menu *domain.Menu) error {
 
 	qbi = sq.
 		Insert(MENU_TABLENAME).
-		Columns("menu_name", "shop_id", "menu_price", "menu_status", "menu_photo_link"). 
+		Columns("menu_name", "shop_id", "menu_price", "menu_status", "menu_photo_link").
 		Values(menu.Name, menu.ShopID, menu.Price, menu.Status, menu.PhotoLink)
 
 	query, args, err = qbi.PlaceholderFormat(sq.Dollar).ToSql()
@@ -123,6 +147,11 @@ func (r *menuRepositoryImpl) InsertMenu(menu *domain.Menu) error {
 	}
 
 	if _, err = r.conn.Exec(query, args...); err != nil {
+
+		if strings.Contains(err.Error(), "violates") {
+			return domain.ErrBadRequest
+		}
+
 		log.Error(log.LogInfo{
 			"error": err.Error(),
 		}, "[MENU REPOSITORY][InsertMenu] failed to execute sql statement")
@@ -146,7 +175,7 @@ func (r *menuRepositoryImpl) UpdateMenu(params *dto.MenuParams, menu *domain.Men
 		Set("menu_price", menu.Price).
 		Set("menu_photo_link", menu.PhotoLink).
 		Set("menu_status", menu.Status).
-		Set("updated_at", time.Now()). 
+		Set("updated_at", time.Now()).
 		Where("menu_id = ?", params.ID)
 
 	query, args, err = qb.PlaceholderFormat(sq.Dollar).ToSql()
