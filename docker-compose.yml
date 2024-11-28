@@ -6,6 +6,8 @@ services:
       dockerfile: Dockerfile
     network_mode: host 
     restart: on-failure
+    depends_on:
+      - db
   filkom-db:
     container_name: filkom-db
     image: postgres:16.1

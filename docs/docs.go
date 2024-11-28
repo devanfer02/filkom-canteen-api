@@ -799,6 +799,9 @@ const docTemplate = `{
                 "security": [
                     {
                         "ApiKeyAuth": []
+                    },
+                    {
+                        "UserAuth": []
                     }
                 ],
                 "description": "Fetch All Shops From Database",
@@ -806,7 +809,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Shops"
+                    "Shops (Admin only)"
                 ],
                 "summary": "Fetch All Shops",
                 "responses": {
@@ -843,6 +846,9 @@ const docTemplate = `{
                 "security": [
                     {
                         "ApiKeyAuth": []
+                    },
+                    {
+                        "UserAuth": []
                     }
                 ],
                 "description": "Register Shop to System",
@@ -850,7 +856,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Shops"
+                    "Shops (Admin only)"
                 ],
                 "summary": "Register Shop",
                 "parameters": [
@@ -885,6 +891,9 @@ const docTemplate = `{
                 "security": [
                     {
                         "ApiKeyAuth": []
+                    },
+                    {
+                        "UserAuth": []
                     }
                 ],
                 "description": "Fetch Shop By ID From DB",
@@ -892,7 +901,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Shops"
+                    "Shops (Admin and Owner)"
                 ],
                 "summary": "Fetch Shop By ID",
                 "parameters": [
@@ -953,6 +962,9 @@ const docTemplate = `{
                 "security": [
                     {
                         "ApiKeyAuth": []
+                    },
+                    {
+                        "UserAuth": []
                     }
                 ],
                 "description": "Update Existing Shop",
@@ -960,7 +972,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Shops"
+                    "Shops (Admin and Owner)"
                 ],
                 "summary": "Update Shop",
                 "parameters": [
@@ -1024,6 +1036,9 @@ const docTemplate = `{
                 "security": [
                     {
                         "ApiKeyAuth": []
+                    },
+                    {
+                        "UserAuth": []
                     }
                 ],
                 "description": "Delete Existing Shop",
@@ -1031,7 +1046,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Shops"
+                    "Shops (Admin only)"
                 ],
                 "summary": "Delete Shop",
                 "parameters": [
@@ -1070,6 +1085,9 @@ const docTemplate = `{
                 "security": [
                     {
                         "ApiKeyAuth": []
+                    },
+                    {
+                        "UserAuth": []
                     }
                 ],
                 "description": "Add Owner to Shop",
@@ -1077,7 +1095,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Shops"
+                    "Shops (Admin only)"
                 ],
                 "summary": "Add Owner to Shop",
                 "parameters": [
@@ -1121,6 +1139,9 @@ const docTemplate = `{
                 "security": [
                     {
                         "ApiKeyAuth": []
+                    },
+                    {
+                        "UserAuth": []
                     }
                 ],
                 "description": "Remove Owner from Shop",
@@ -1128,7 +1149,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Shops"
+                    "Shops (Admin only)"
                 ],
                 "summary": "Remove Owner from Shop",
                 "parameters": [
@@ -1326,6 +1347,12 @@ const docTemplate = `{
             "type": "apiKey",
             "name": "x-api-key",
             "in": "header"
+        },
+        "UserAuth": {
+            "description": "API Key for accessing protected user and admin endpoints. Type: Bearer TOKEN",
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
         }
     }
 }`
@@ -1333,9 +1360,9 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "filkom-api.dvnnfrr.my.id",
+	Host:             "localhost:5700",
 	BasePath:         "",
-	Schemes:          []string{"https"},
+	Schemes:          []string{},
 	Title:            "FILKOM Canteen API",
 	Description:      "This is FILKOM Canteen API Documentation",
 	InfoInstanceName: "swagger",

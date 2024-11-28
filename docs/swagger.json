@@ -1,7 +1,4 @@
 {
-    "schemes": [
-        "https"
-    ],
     "swagger": "2.0",
     "info": {
         "description": "This is FILKOM Canteen API Documentation",
@@ -9,7 +6,7 @@
         "contact": {},
         "version": "1.0"
     },
-    "host": "filkom-api.dvnnfrr.my.id",
+    "host": "localhost:5700",
     "paths": {
         "/api/v1/menus": {
             "get": {
@@ -795,6 +792,9 @@
                 "security": [
                     {
                         "ApiKeyAuth": []
+                    },
+                    {
+                        "UserAuth": []
                     }
                 ],
                 "description": "Fetch All Shops From Database",
@@ -802,7 +802,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "Shops"
+                    "Shops (Admin only)"
                 ],
                 "summary": "Fetch All Shops",
                 "responses": {
@@ -839,6 +839,9 @@
                 "security": [
                     {
                         "ApiKeyAuth": []
+                    },
+                    {
+                        "UserAuth": []
                     }
                 ],
                 "description": "Register Shop to System",
@@ -846,7 +849,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "Shops"
+                    "Shops (Admin only)"
                 ],
                 "summary": "Register Shop",
                 "parameters": [
@@ -881,6 +884,9 @@
                 "security": [
                     {
                         "ApiKeyAuth": []
+                    },
+                    {
+                        "UserAuth": []
                     }
                 ],
                 "description": "Fetch Shop By ID From DB",
@@ -888,7 +894,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "Shops"
+                    "Shops (Admin and Owner)"
                 ],
                 "summary": "Fetch Shop By ID",
                 "parameters": [
@@ -949,6 +955,9 @@
                 "security": [
                     {
                         "ApiKeyAuth": []
+                    },
+                    {
+                        "UserAuth": []
                     }
                 ],
                 "description": "Update Existing Shop",
@@ -956,7 +965,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "Shops"
+                    "Shops (Admin and Owner)"
                 ],
                 "summary": "Update Shop",
                 "parameters": [
@@ -1020,6 +1029,9 @@
                 "security": [
                     {
                         "ApiKeyAuth": []
+                    },
+                    {
+                        "UserAuth": []
                     }
                 ],
                 "description": "Delete Existing Shop",
@@ -1027,7 +1039,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "Shops"
+                    "Shops (Admin only)"
                 ],
                 "summary": "Delete Shop",
                 "parameters": [
@@ -1066,6 +1078,9 @@
                 "security": [
                     {
                         "ApiKeyAuth": []
+                    },
+                    {
+                        "UserAuth": []
                     }
                 ],
                 "description": "Add Owner to Shop",
@@ -1073,7 +1088,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "Shops"
+                    "Shops (Admin only)"
                 ],
                 "summary": "Add Owner to Shop",
                 "parameters": [
@@ -1117,6 +1132,9 @@
                 "security": [
                     {
                         "ApiKeyAuth": []
+                    },
+                    {
+                        "UserAuth": []
                     }
                 ],
                 "description": "Remove Owner from Shop",
@@ -1124,7 +1142,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "Shops"
+                    "Shops (Admin only)"
                 ],
                 "summary": "Remove Owner from Shop",
                 "parameters": [
@@ -1321,6 +1339,12 @@
             "description": "API Key for accessing all endpoints. Type: Key TOKEN",
             "type": "apiKey",
             "name": "x-api-key",
+            "in": "header"
+        },
+        "UserAuth": {
+            "description": "API Key for accessing protected user and admin endpoints. Type: Bearer TOKEN",
+            "type": "apiKey",
+            "name": "Authorization",
             "in": "header"
         }
     }

@@ -41,20 +41,26 @@ func (r *orderRepositoryImpl) FetchAll(params *dto.OrderParams) ([]domain.Order,
 
 	qb = sq.Select(
 		"order_id",
-		"user_id",
-		"menu_id",
+		"orders.user_id AS order_user_id",
+		"orders.menu_id AS order_menu_id",
 		"payment_method",
 		"payment_proof_link",
 		"status",
-		"created_at",
-		"updated_at",
+		"orders.created_at AS created_at",
+		"orders.updated_at AS updated_at",
 	).From(ORDER_TABLENAME)
 
 	if params.ShopID != "" {
 		qb = qb.
 			Join("menus ON menus.menu_id = orders.menu_id").
 			Join("shops ON shops.shop_id = menus.shop_id").
-			Where("shop_id = ?", params.ShopID)
+			Where("shops.shop_id = ?", params.ShopID)
+	}
+
+	if params.UserID != "" {
+		qb = qb. 
+			Join("users ON users.user_id = orders.user_id"). 
+			Where("users.user_id = ?", params.UserID)
 	}
 
 	query, args, err = qb.PlaceholderFormat(sq.Dollar).ToSql()
@@ -198,7 +204,7 @@ func (r *orderRepositoryImpl) DeleteOrder(params *dto.OrderParams) error {
 
 	qb = sq.
 		Delete(ORDER_TABLENAME).
-		Where("order_id = ?", params.ID)
+		Where("order_id = ? AND user_id = ?", params.ID, params.UserID)
 
 	query, args, err = qb.PlaceholderFormat(sq.Dollar).ToSql()
 

@@ -1,5 +1,5 @@
 CREATE TABLE orders (
-    order_id UUID PRIMARY KEY,
+    order_id UUID PRIMARY KEY DEFAULT generate_ulid(),
     user_id UUID REFERENCES users(user_id),
     menu_id UUID REFERENCES menus(menu_id),
     status VARCHAR,

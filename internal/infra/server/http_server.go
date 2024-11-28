@@ -65,8 +65,8 @@ func (h *httpServer) MountControllers() {
 	// controllers
 	controller.MountShopRoutes(v1, shopSvc, mdlwr)
 	controller.MountOwnerRoutes(v1, ownerSvc)
-	controller.MountMenuRoutes(v1, menuSvc)
-	controller.MountOrderRoutes(v1, orderSvc)
+	controller.MountMenuRoutes(v1, menuSvc, mdlwr)
+	controller.MountOrderRoutes(v1, orderSvc, mdlwr)
 
 	h.app.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
 

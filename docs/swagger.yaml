@@ -96,7 +96,7 @@ definitions:
       status:
         type: string
     type: object
-host: filkom-api.dvnnfrr.my.id
+host: localhost:5700
 info:
   contact: {}
   description: This is FILKOM Canteen API Documentation
@@ -595,9 +595,10 @@ paths:
             $ref: '#/definitions/ginlib.Response'
       security:
       - ApiKeyAuth: []
+      - UserAuth: []
       summary: Fetch All Shops
       tags:
-      - Shops
+      - Shops (Admin only)
     post:
       description: Register Shop to System
       parameters:
@@ -620,9 +621,10 @@ paths:
             $ref: '#/definitions/ginlib.Response'
       security:
       - ApiKeyAuth: []
+      - UserAuth: []
       summary: Register Shop
       tags:
-      - Shops
+      - Shops (Admin only)
   /api/v1/shops/{id}:
     delete:
       description: Delete Existing Shop
@@ -649,9 +651,10 @@ paths:
             $ref: '#/definitions/ginlib.Response'
       security:
       - ApiKeyAuth: []
+      - UserAuth: []
       summary: Delete Shop
       tags:
-      - Shops
+      - Shops (Admin only)
     get:
       description: Fetch Shop By ID From DB
       parameters:
@@ -687,9 +690,10 @@ paths:
             $ref: '#/definitions/ginlib.Response'
       security:
       - ApiKeyAuth: []
+      - UserAuth: []
       summary: Fetch Shop By ID
       tags:
-      - Shops
+      - Shops (Admin and Owner)
     put:
       description: Update Existing Shop
       parameters:
@@ -730,9 +734,10 @@ paths:
             $ref: '#/definitions/ginlib.Response'
       security:
       - ApiKeyAuth: []
+      - UserAuth: []
       summary: Update Shop
       tags:
-      - Shops
+      - Shops (Admin and Owner)
   /api/v1/shops/{id}/owners/{ownerId}:
     delete:
       description: Remove Owner from Shop
@@ -764,9 +769,10 @@ paths:
             $ref: '#/definitions/ginlib.Response'
       security:
       - ApiKeyAuth: []
+      - UserAuth: []
       summary: Remove Owner from Shop
       tags:
-      - Shops
+      - Shops (Admin only)
     post:
       description: Add Owner to Shop
       parameters:
@@ -797,15 +803,20 @@ paths:
             $ref: '#/definitions/ginlib.Response'
       security:
       - ApiKeyAuth: []
+      - UserAuth: []
       summary: Add Owner to Shop
       tags:
-      - Shops
-schemes:
-- https
+      - Shops (Admin only)
 securityDefinitions:
   ApiKeyAuth:
     description: 'API Key for accessing all endpoints. Type: Key TOKEN'
     in: header
     name: x-api-key
+    type: apiKey
+  UserAuth:
+    description: 'API Key for accessing protected user and admin endpoints. Type:
+      Bearer TOKEN'
+    in: header
+    name: Authorization
     type: apiKey
 swagger: "2.0"

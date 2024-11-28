@@ -12,6 +12,7 @@ import (
 
 	"github.com/devanfer02/filkom-canteen/domain"
 	"github.com/devanfer02/filkom-canteen/internal/infra/env"
+	"github.com/devanfer02/filkom-canteen/internal/pkg/bcrypt"
 	"github.com/devanfer02/filkom-canteen/internal/pkg/flag"
 	"github.com/devanfer02/filkom-canteen/internal/pkg/log"
 )
@@ -85,6 +86,8 @@ func runSeeder(dbx *sqlx.DB) {
 			WANumber: "+62 000000",
 		}
 	)
+
+	admin.Password, _ = bcrypt.HashPassword(admin.Password)
 
 	// this is not best practice but idgaf because is jus uni project
 	roles := []map[string]interface{}{

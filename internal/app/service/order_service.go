@@ -8,7 +8,7 @@ import (
 )
 
 type IOrderService interface {
-	FetchAllOrders() ([]domain.Order, error)
+	FetchAllOrders(params *dto.OrderParams) ([]domain.Order, error)
 	FetchOrderByID(params *dto.OrderParams) (*domain.Order, error)
 	CreateOrder(params *dto.OrderParams, req *dto.OrderRequest) error
 	UpdateOrder(params *dto.OrderParams, req *dto.OrderRequest) error
@@ -23,8 +23,8 @@ func NewOrderService(orderRepo repository.IOrderRepository) IOrderService {
 	return &orderServiceImpl{orderRepo}
 }
 
-func (s *orderServiceImpl) FetchAllOrders() ([]domain.Order, error) {
-	menus, err := s.menuRepo.FetchAll(&dto.OrderParams{})
+func (s *orderServiceImpl) FetchAllOrders(params *dto.OrderParams) ([]domain.Order, error) {
+	menus, err := s.menuRepo.FetchAll(params)
 
 	return menus, err
 }
@@ -41,10 +41,10 @@ func (s *orderServiceImpl) FetchOrderByID(params *dto.OrderParams) (*domain.Orde
 
 func (s *orderServiceImpl) CreateOrder(params *dto.OrderParams, req *dto.OrderRequest) error {
 	err := s.menuRepo.InsertOrder(&domain.Order{
-		UserID: req.UserID,
+		UserID: params.UserID,
 		MenuID: req.MenuID,
-
-		Status: req.Status,
+		PaymentMethod: req.PaymentMethod,
+		Status: "Waiting",
 	})
 
 	return err

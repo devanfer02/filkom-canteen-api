@@ -11,6 +11,7 @@ import (
 	"github.com/devanfer02/filkom-canteen/internal/pkg/jwt"
 	"github.com/devanfer02/filkom-canteen/internal/pkg/log"
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 )
 
 func (m *Middleware) Authenticate() gin.HandlerFunc {
@@ -67,6 +68,12 @@ func (m *Middleware) Authenticate() gin.HandlerFunc {
 			return
 		}
 
+		if _, err = uuid.Parse(issuer.UserID); err != nil {
+			err = errors.New("failed to authenticate")
+			return 
+		}
+
+
 		ctx.Set("id", issuer.UserID)
 		ctx.Set("user", issuer.Issuer)
 		ctx.Set("role", issuer.Role)
@@ -84,13 +91,19 @@ func (m *Middleware) AuthorizeAdmin(roles ...string) gin.HandlerFunc {
 			role    *domain.Role
 		)
 
-		role, err = m.roleRepo.FetchOne(ctx.GetString("role"))
-
 		defer func() {
 			if err != nil {
 				ginlib.SendAbortResponse(ctx, code, status, message, err)
 			}
 		}()
+
+		if _, err = uuid.Parse(ctx.GetString("role")); err != nil {
+			err = errors.New("failed to authorize")
+			return 
+		}
+
+		role, err = m.roleRepo.FetchOne(ctx.GetString("role"))
+
 
 		if err != nil {
 			err = errors.New("failed to authorize")
