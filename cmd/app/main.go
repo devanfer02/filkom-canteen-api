@@ -10,9 +10,9 @@ import (
 //	@title						FILKOM Canteen API
 //	@version					1.0
 //	@description				This is FILKOM Canteen API Documentation
-//	@host						localhost:5700
-//	@@host						filkom-api.dvnnfrr.my.id
-//	@@schemes					https
+//	@@host						localhost:5700
+//	@host						filkom-api.dvnnfrr.my.id
+//	@schemes					https
 //	@securityDefinitions.apiKey	UserAuth
 //	@in							header
 //	@name						Authorization

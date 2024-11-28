@@ -72,6 +72,9 @@ const docTemplate = `{
                 "security": [
                     {
                         "ApiKeyAuth": []
+                    },
+                    {
+                        "UserAuth": []
                     }
                 ],
                 "description": "Update Existing Menu",
@@ -79,7 +82,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Menus"
+                    "Menus (Admin and Owner)"
                 ],
                 "summary": "Update Menu",
                 "parameters": [
@@ -125,6 +128,9 @@ const docTemplate = `{
                 "security": [
                     {
                         "ApiKeyAuth": []
+                    },
+                    {
+                        "UserAuth": []
                     }
                 ],
                 "description": "Register Menu to System",
@@ -132,7 +138,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Menus"
+                    "Menus (Admin and Owner)"
                 ],
                 "summary": "Register Menu",
                 "parameters": [
@@ -165,6 +171,9 @@ const docTemplate = `{
                 "security": [
                     {
                         "ApiKeyAuth": []
+                    },
+                    {
+                        "UserAuth": []
                     }
                 ],
                 "description": "Delete Existing Menu from System",
@@ -172,7 +181,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Menus"
+                    "Menus (Admin and Owner)"
                 ],
                 "summary": "Delete Menu",
                 "parameters": [
@@ -252,19 +261,7 @@ const docTemplate = `{
                     "404": {
                         "description": "Item not found",
                         "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/ginlib.Response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/domain.Menu"
-                                        }
-                                    }
-                                }
-                            ]
+                            "$ref": "#/definitions/ginlib.Response"
                         }
                     },
                     "500": {
@@ -281,6 +278,9 @@ const docTemplate = `{
                 "security": [
                     {
                         "ApiKeyAuth": []
+                    },
+                    {
+                        "UserAuth": []
                     }
                 ],
                 "description": "Fetch All Orders From Database",
@@ -291,6 +291,20 @@ const docTemplate = `{
                     "Orders"
                 ],
                 "summary": "Fetch All Orders",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Shop ID",
+                        "name": "shop_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "User ID",
+                        "name": "user_id",
+                        "in": "query"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -325,6 +339,9 @@ const docTemplate = `{
                 "security": [
                     {
                         "ApiKeyAuth": []
+                    },
+                    {
+                        "UserAuth": []
                     }
                 ],
                 "description": "Update Existing Order",
@@ -332,7 +349,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Orders"
+                    "Orders (Admin and Owner)"
                 ],
                 "summary": "Update Order",
                 "parameters": [
@@ -378,6 +395,9 @@ const docTemplate = `{
                 "security": [
                     {
                         "ApiKeyAuth": []
+                    },
+                    {
+                        "UserAuth": []
                     }
                 ],
                 "description": "Register Order to System",
@@ -418,6 +438,9 @@ const docTemplate = `{
                 "security": [
                     {
                         "ApiKeyAuth": []
+                    },
+                    {
+                        "UserAuth": []
                     }
                 ],
                 "description": "Delete Existing Order from System",
@@ -464,6 +487,9 @@ const docTemplate = `{
                 "security": [
                     {
                         "ApiKeyAuth": []
+                    },
+                    {
+                        "UserAuth": []
                     }
                 ],
                 "description": "Fetch Order By ID From DB",
@@ -1360,9 +1386,9 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "localhost:5700",
+	Host:             "filkom-api.dvnnfrr.my.id",
 	BasePath:         "",
-	Schemes:          []string{},
+	Schemes:          []string{"https"},
 	Title:            "FILKOM Canteen API",
 	Description:      "This is FILKOM Canteen API Documentation",
 	InfoInstanceName: "swagger",

@@ -96,7 +96,7 @@ definitions:
       status:
         type: string
     type: object
-host: localhost:5700
+host: filkom-api.dvnnfrr.my.id
 info:
   contact: {}
   description: This is FILKOM Canteen API Documentation
@@ -129,9 +129,10 @@ paths:
             $ref: '#/definitions/ginlib.Response'
       security:
       - ApiKeyAuth: []
+      - UserAuth: []
       summary: Delete Menu
       tags:
-      - Menus
+      - Menus (Admin and Owner)
     get:
       description: Fetch All Menus From Database
       parameters:
@@ -184,9 +185,10 @@ paths:
             $ref: '#/definitions/ginlib.Response'
       security:
       - ApiKeyAuth: []
+      - UserAuth: []
       summary: Register Menu
       tags:
-      - Menus
+      - Menus (Admin and Owner)
     put:
       description: Update Existing Menu
       parameters:
@@ -218,9 +220,10 @@ paths:
             $ref: '#/definitions/ginlib.Response'
       security:
       - ApiKeyAuth: []
+      - UserAuth: []
       summary: Update Menu
       tags:
-      - Menus
+      - Menus (Admin and Owner)
   /api/v1/menus/{id}:
     get:
       description: Fetch Menu By ID From DB
@@ -245,12 +248,7 @@ paths:
         "404":
           description: Item not found
           schema:
-            allOf:
-            - $ref: '#/definitions/ginlib.Response'
-            - properties:
-                data:
-                  $ref: '#/definitions/domain.Menu'
-              type: object
+            $ref: '#/definitions/ginlib.Response'
         "500":
           description: Internal Server Error
           schema:
@@ -286,11 +284,21 @@ paths:
             $ref: '#/definitions/ginlib.Response'
       security:
       - ApiKeyAuth: []
+      - UserAuth: []
       summary: Delete Order
       tags:
       - Orders
     get:
       description: Fetch All Orders From Database
+      parameters:
+      - description: Shop ID
+        in: query
+        name: shop_id
+        type: string
+      - description: User ID
+        in: query
+        name: user_id
+        type: string
       produces:
       - application/json
       responses:
@@ -311,6 +319,7 @@ paths:
             $ref: '#/definitions/ginlib.Response'
       security:
       - ApiKeyAuth: []
+      - UserAuth: []
       summary: Fetch All Orders
       tags:
       - Orders
@@ -336,6 +345,7 @@ paths:
             $ref: '#/definitions/ginlib.Response'
       security:
       - ApiKeyAuth: []
+      - UserAuth: []
       summary: Register Order
       tags:
       - Orders
@@ -370,9 +380,10 @@ paths:
             $ref: '#/definitions/ginlib.Response'
       security:
       - ApiKeyAuth: []
+      - UserAuth: []
       summary: Update Order
       tags:
-      - Orders
+      - Orders (Admin and Owner)
   /api/v1/orders/{id}:
     get:
       description: Fetch Order By ID From DB
@@ -404,6 +415,7 @@ paths:
             $ref: '#/definitions/ginlib.Response'
       security:
       - ApiKeyAuth: []
+      - UserAuth: []
       summary: Fetch Order By ID
       tags:
       - Orders
@@ -807,6 +819,8 @@ paths:
       summary: Add Owner to Shop
       tags:
       - Shops (Admin only)
+schemes:
+- https
 securityDefinitions:
   ApiKeyAuth:
     description: 'API Key for accessing all endpoints. Type: Key TOKEN'

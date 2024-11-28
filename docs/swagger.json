@@ -1,4 +1,7 @@
 {
+    "schemes": [
+        "https"
+    ],
     "swagger": "2.0",
     "info": {
         "description": "This is FILKOM Canteen API Documentation",
@@ -6,7 +9,7 @@
         "contact": {},
         "version": "1.0"
     },
-    "host": "localhost:5700",
+    "host": "filkom-api.dvnnfrr.my.id",
     "paths": {
         "/api/v1/menus": {
             "get": {
@@ -65,6 +68,9 @@
                 "security": [
                     {
                         "ApiKeyAuth": []
+                    },
+                    {
+                        "UserAuth": []
                     }
                 ],
                 "description": "Update Existing Menu",
@@ -72,7 +78,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "Menus"
+                    "Menus (Admin and Owner)"
                 ],
                 "summary": "Update Menu",
                 "parameters": [
@@ -118,6 +124,9 @@
                 "security": [
                     {
                         "ApiKeyAuth": []
+                    },
+                    {
+                        "UserAuth": []
                     }
                 ],
                 "description": "Register Menu to System",
@@ -125,7 +134,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "Menus"
+                    "Menus (Admin and Owner)"
                 ],
                 "summary": "Register Menu",
                 "parameters": [
@@ -158,6 +167,9 @@
                 "security": [
                     {
                         "ApiKeyAuth": []
+                    },
+                    {
+                        "UserAuth": []
                     }
                 ],
                 "description": "Delete Existing Menu from System",
@@ -165,7 +177,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "Menus"
+                    "Menus (Admin and Owner)"
                 ],
                 "summary": "Delete Menu",
                 "parameters": [
@@ -245,19 +257,7 @@
                     "404": {
                         "description": "Item not found",
                         "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/ginlib.Response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/domain.Menu"
-                                        }
-                                    }
-                                }
-                            ]
+                            "$ref": "#/definitions/ginlib.Response"
                         }
                     },
                     "500": {
@@ -274,6 +274,9 @@
                 "security": [
                     {
                         "ApiKeyAuth": []
+                    },
+                    {
+                        "UserAuth": []
                     }
                 ],
                 "description": "Fetch All Orders From Database",
@@ -284,6 +287,20 @@
                     "Orders"
                 ],
                 "summary": "Fetch All Orders",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Shop ID",
+                        "name": "shop_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "User ID",
+                        "name": "user_id",
+                        "in": "query"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -318,6 +335,9 @@
                 "security": [
                     {
                         "ApiKeyAuth": []
+                    },
+                    {
+                        "UserAuth": []
                     }
                 ],
                 "description": "Update Existing Order",
@@ -325,7 +345,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "Orders"
+                    "Orders (Admin and Owner)"
                 ],
                 "summary": "Update Order",
                 "parameters": [
@@ -371,6 +391,9 @@
                 "security": [
                     {
                         "ApiKeyAuth": []
+                    },
+                    {
+                        "UserAuth": []
                     }
                 ],
                 "description": "Register Order to System",
@@ -411,6 +434,9 @@
                 "security": [
                     {
                         "ApiKeyAuth": []
+                    },
+                    {
+                        "UserAuth": []
                     }
                 ],
                 "description": "Delete Existing Order from System",
@@ -457,6 +483,9 @@
                 "security": [
                     {
                         "ApiKeyAuth": []
+                    },
+                    {
+                        "UserAuth": []
                     }
                 ],
                 "description": "Fetch Order By ID From DB",
