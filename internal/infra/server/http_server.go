@@ -37,11 +37,13 @@ func NewHTTPServer(dbx *sqlx.DB) Server {
 
 func (h *httpServer) MountMiddlewares() {
 	h.app.Use(middleware.CORS())
-	h.app.Use(middleware.APIKey()) // disabled for development
+	
 }
 
 func (h *httpServer) MountControllers() {
 	v1 := h.app.Group("/api/v1")
+	v1.Use(middleware.APIKey())
+
 	redis := redis.NewRedisClient()
 
 	url := ginSwagger.URL(env.AppEnv.AppUrl + `/swagger/doc.json`)
