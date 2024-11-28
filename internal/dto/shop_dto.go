@@ -8,8 +8,8 @@ type ShopParams struct {
 }
 
 type ShopRequest struct {
-	Name        string `json:"shop_name"`
-	Description string `json:"shop_description"`
+	Name        string `json:"shop_name" binding:"required"`
+	Description string `json:"shop_description" binding:"required"`
 	Photo       *multipart.FileHeader
-	PhotoLink   string
+	PhotoLink   string `json:"photo_link"`
 }

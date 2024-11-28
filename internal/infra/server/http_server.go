@@ -37,7 +37,7 @@ func NewHTTPServer(dbx *sqlx.DB) Server {
 
 func (h *httpServer) MountMiddlewares() {
 	h.app.Use(middleware.CORS())
-	// h.app.Use(middleware.APIKey()) // disabled for development
+	h.app.Use(middleware.APIKey()) // disabled for development
 }
 
 func (h *httpServer) MountControllers() {

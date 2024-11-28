@@ -5,8 +5,8 @@ type OwnerParams struct {
 }
 
 type OwnerRequest struct {
-	Fullname string `json:"fullname" db:"fullname"`
-	WANumber string `json:"wa_number" db:"wa_number"`
-	Username string `json:"username" db:"username"`
-	Password string `json:"password" db:"password"`
+	Fullname string `json:"fullname" db:"fullname" binding:"required"`
+	WANumber string `json:"wa_number" db:"wa_number" binding:"required"`
+	Username string `json:"username" db:"username" binding:"required"`
+	Password string `json:"password" db:"password" binding:"required"`
 }
