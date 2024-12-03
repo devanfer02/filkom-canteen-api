@@ -4,6 +4,7 @@ import (
 	"github.com/devanfer02/filkom-canteen/domain"
 	"github.com/devanfer02/filkom-canteen/internal/app/repository"
 	"github.com/devanfer02/filkom-canteen/internal/dto"
+	enc "github.com/devanfer02/filkom-canteen/internal/pkg/encoder"
 	"github.com/google/uuid"
 )
 
@@ -16,7 +17,7 @@ type IOrderService interface {
 }
 
 type orderServiceImpl struct {
-	menuRepo repository.IOrderRepository
+	orderRepo repository.IOrderRepository
 }
 
 func NewOrderService(orderRepo repository.IOrderRepository) IOrderService {
@@ -24,25 +25,55 @@ func NewOrderService(orderRepo repository.IOrderRepository) IOrderService {
 }
 
 func (s *orderServiceImpl) FetchAllOrders(params *dto.OrderParams) ([]domain.Order, error) {
-	menus, err := s.menuRepo.FetchAll(params)
+	orders, err := s.orderRepo.FetchAll(params)
 
-	return menus, err
+	if err != nil {
+		return nil, err 
+	}
+
+	for idx, order := range orders {
+		orders[idx].ID = enc.Encode(order.ID)
+		orders[idx].MenuID = enc.Encode(order.MenuID)
+	}
+
+	return orders, err
 }
 
 func (s *orderServiceImpl) FetchOrderByID(params *dto.OrderParams) (*domain.Order, error) {
-	if _, err := uuid.Parse(params.ID); err != nil {
+	decoded, err := enc.Decode(params.ID)
+
+	if err != nil {
 		return nil, domain.ErrBadRequest
 	}
 
-	menu, err := s.menuRepo.FetchByID(params)
+	params.ID = decoded
 
-	return menu, err
+	if _, err := uuid.Parse(params.ID); err != nil {
+		return nil, domain.ErrBadRequest
+	}
+	
+	order, err := s.orderRepo.FetchByID(params)
+
+	if err != nil {
+		return nil, err 
+	}
+
+	order.ID = enc.Encode(order.ID) 
+	order.MenuID = enc.Encode(order.MenuID)
+
+	return order, err
 }
 
 func (s *orderServiceImpl) CreateOrder(params *dto.OrderParams, req *dto.OrderRequest) error {
-	err := s.menuRepo.InsertOrder(&domain.Order{
+	decodedMenuID, err := enc.Decode(req.MenuID)
+
+	if err != nil {
+		return domain.ErrBadRequest
+	}
+
+	err = s.orderRepo.InsertOrder(&domain.Order{
 		UserID: params.UserID,
-		MenuID: req.MenuID,
+		MenuID: decodedMenuID,
 		PaymentMethod: req.PaymentMethod,
 		Status: "Waiting",
 	})
@@ -52,7 +83,7 @@ func (s *orderServiceImpl) CreateOrder(params *dto.OrderParams, req *dto.OrderRe
 
 func (s *orderServiceImpl) UpdateOrder(params *dto.OrderParams, req *dto.OrderRequest) error {
 
-	err := s.menuRepo.UpdateOrder(params, &domain.Order{
+	err := s.orderRepo.UpdateOrder(params, &domain.Order{
 		Status:           req.Status,
 		PaymentMethod:    req.PaymentMethod,
 		PaymentProofLink: "",
@@ -62,7 +93,7 @@ func (s *orderServiceImpl) UpdateOrder(params *dto.OrderParams, req *dto.OrderRe
 }
 
 func (s *orderServiceImpl) DeleteOrder(params *dto.OrderParams) error {
-	err := s.menuRepo.DeleteOrder(params)
+	err := s.orderRepo.DeleteOrder(params)
 
 	return err
 }

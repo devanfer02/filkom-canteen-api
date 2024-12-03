@@ -81,6 +81,11 @@ definitions:
         type: string
       wa_number:
         type: string
+    required:
+    - fullname
+    - password
+    - username
+    - wa_number
     type: object
   dto.ShopRequest:
     type: object
@@ -294,10 +299,6 @@ paths:
       - description: Shop ID
         in: query
         name: shop_id
-        type: string
-      - description: User ID
-        in: query
-        name: user_id
         type: string
       produces:
       - application/json

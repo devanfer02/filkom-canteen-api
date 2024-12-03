@@ -4,6 +4,7 @@ import (
 	"github.com/devanfer02/filkom-canteen/domain"
 	"github.com/devanfer02/filkom-canteen/internal/app/service"
 	"github.com/devanfer02/filkom-canteen/internal/dto"
+	"github.com/devanfer02/filkom-canteen/internal/infra/env"
 	"github.com/devanfer02/filkom-canteen/internal/middleware"
 	ginlib "github.com/devanfer02/filkom-canteen/internal/pkg/gin"
 	"github.com/gin-gonic/gin"
@@ -29,7 +30,6 @@ func MountOrderRoutes(r *gin.RouterGroup, orderSvc service.IOrderService, mdlwr 
 //	@Description	Fetch All Orders From Database
 //	@Produce		json
 //	@Param			shop_id	query		string									false	"Shop ID"
-//	@Param			user_id	query		string									false	"User ID"
 //	@Success		200		{object}	ginlib.Response{data=[]domain.Order}	"OK"
 //	@Failure		500		{object}	ginlib.Response							"Internal Server Error"
 //	@Security		ApiKeyAuth
@@ -44,6 +44,7 @@ func (c *orderController) FetchAll(ctx *gin.Context) {
 		err     error
 		shopId  = ctx.Query("shop_id")
 		userID  = ctx.GetString("id")
+		user    = ctx.GetString("user")
 	)
 
 	defer func() {
@@ -52,8 +53,15 @@ func (c *orderController) FetchAll(ctx *gin.Context) {
 
 	orders, err = c.orderSvc.FetchAllOrders(&dto.OrderParams{
 		ShopID: shopId,
-		UserID: userID,
+		UserID: func()string {
+			if user == env.AppEnv.JWTUserRole {
+				return userID 
+			}
+
+			return ""
+		}(),
 	})
+	
 	code, status = domain.GetStatus(err)
 
 	if err != nil {

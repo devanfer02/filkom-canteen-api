@@ -297,12 +297,6 @@ const docTemplate = `{
                         "description": "Shop ID",
                         "name": "shop_id",
                         "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "User ID",
-                        "name": "user_id",
-                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -1330,6 +1324,12 @@ const docTemplate = `{
         },
         "dto.OwnerRequest": {
             "type": "object",
+            "required": [
+                "fullname",
+                "password",
+                "username",
+                "wa_number"
+            ],
             "properties": {
                 "fullname": {
                     "type": "string"

@@ -4,6 +4,7 @@ import (
 	"github.com/devanfer02/filkom-canteen/domain"
 	"github.com/devanfer02/filkom-canteen/internal/app/repository"
 	"github.com/devanfer02/filkom-canteen/internal/dto"
+	enc "github.com/devanfer02/filkom-canteen/internal/pkg/encoder"
 	"github.com/google/uuid"
 )
 
@@ -28,15 +29,37 @@ func NewShopService(shopRepo repository.IShopRepository) IShopService {
 func (s *shopServiceImpl) FetchAllShops() ([]domain.Shop, error) {
 	shops, err := s.shopRepo.FetchAllShops()
 
+	if err != nil {
+		return nil, err 
+	}
+
+	for idx, shop := range shops {
+		shops[idx].ID = enc.Encode(shop.ID)
+	}
+
 	return shops, err
 }
 
 func (s *shopServiceImpl) FetchShopByID(params *dto.ShopParams) (*domain.Shop, error) {
+	decoded, err := enc.Decode(params.ID)
+
+	if err != nil {
+		return nil, domain.ErrBadRequest
+	}
+
+	params.ID = decoded
+
 	if _, err := uuid.Parse(params.ID); err != nil {
 		return nil, domain.ErrBadRequest
 	}
 
 	shop, err := s.shopRepo.FetchShopByID(params)
+
+	if err != nil {
+		return nil, err 
+	}
+
+	shop.ID = enc.Encode(shop.ID) 
 
 	return shop, err
 }
