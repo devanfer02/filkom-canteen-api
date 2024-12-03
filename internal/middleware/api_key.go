@@ -20,7 +20,9 @@ func APIKey() gin.HandlerFunc {
 		)
 
 		defer func() {
-			ginlib.SendAbortResponse(ctx, code, status, message, err)
+			if err != nil {
+				ginlib.SendAbortResponse(ctx, code, status, message, err)
+			}
 		}()
 
 		header = ctx.GetHeader("x-api-key")
@@ -39,6 +41,7 @@ func APIKey() gin.HandlerFunc {
 
 		if split[1] != env.AppEnv.ApiKey {
 			err = errors.New("invalid api key")
+			return 
 		}
 
 		ctx.Next()
