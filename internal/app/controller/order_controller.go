@@ -20,7 +20,7 @@ func MountOrderRoutes(r *gin.RouterGroup, orderSvc service.IOrderService, mdlwr 
 
 	orderR.GET("", mdlwr.Authenticate(),orderCtr.FetchAll)
 	orderR.GET("/:id", mdlwr.Authenticate(), orderCtr.FetchByID)
-	orderR.POST("", mdlwr.Authenticate(), orderCtr.CreateOrder)
+	orderR.POST("", mdlwr.Authenticate(),mdlwr.RateLimiter(200),  orderCtr.CreateOrder)
 	orderR.PUT("/:id", mdlwr.Authenticate(), mdlwr.AuthorizeAdmin("Admin", "Owner"),orderCtr.UpdateOrder)
 	orderR.DELETE("/:id", mdlwr.Authenticate(), orderCtr.DeleteOrder)
 }
@@ -61,7 +61,7 @@ func (c *orderController) FetchAll(ctx *gin.Context) {
 			return ""
 		}(),
 	})
-	
+
 	code, status = domain.GetStatus(err)
 
 	if err != nil {
