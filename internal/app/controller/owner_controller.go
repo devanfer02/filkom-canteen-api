@@ -4,6 +4,7 @@ import (
 	"github.com/devanfer02/filkom-canteen/domain"
 	"github.com/devanfer02/filkom-canteen/internal/app/service"
 	"github.com/devanfer02/filkom-canteen/internal/dto"
+	"github.com/devanfer02/filkom-canteen/internal/middleware"
 	ginlib "github.com/devanfer02/filkom-canteen/internal/pkg/gin"
 	"github.com/gin-gonic/gin"
 )
@@ -12,15 +13,15 @@ type ownerController struct {
 	ownerSvc service.IOwnerService
 }
 
-func MountOwnerRoutes(r *gin.RouterGroup, ownerSvc service.IOwnerService) {
+func MountOwnerRoutes(r *gin.RouterGroup, ownerSvc service.IOwnerService, mdlwr *middleware.Middleware) {
 	ownerCtr := &ownerController{ownerSvc}
 	ownerR := r.Group("/owners")
 
-	ownerR.GET("", ownerCtr.FetchAll)
-	ownerR.GET("/:id", ownerCtr.FetchByID)
-	ownerR.POST("", ownerCtr.RegisterOwner)
-	ownerR.PUT("/:id", ownerCtr.UpdateOwner)
-	ownerR.DELETE("/:id", ownerCtr.DeleteOwner)
+	ownerR.GET("", mdlwr.Authenticate(),mdlwr.AuthorizeAdmin("Admin"), ownerCtr.FetchAll)
+	ownerR.GET("/:id", mdlwr.Authenticate(),mdlwr.AuthorizeAdmin("Admin", "Owner"), ownerCtr.FetchByID)
+	ownerR.POST("", mdlwr.Authenticate(),mdlwr.AuthorizeAdmin("Admin"),ownerCtr.RegisterOwner)
+	ownerR.PUT("/:id", mdlwr.Authenticate(),mdlwr.AuthorizeAdmin("Admin", "Owner"), ownerCtr.UpdateOwner)
+	ownerR.DELETE("/:id", mdlwr.Authenticate(),mdlwr.AuthorizeAdmin("Admin"), ownerCtr.DeleteOwner)
 }
 
 // @Tags			Owners

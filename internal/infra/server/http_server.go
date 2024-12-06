@@ -66,7 +66,7 @@ func (h *httpServer) MountControllers() {
 
 	// controllers
 	controller.MountShopRoutes(v1, shopSvc, mdlwr)
-	controller.MountOwnerRoutes(v1, ownerSvc)
+	controller.MountOwnerRoutes(v1, ownerSvc, mdlwr)
 	controller.MountMenuRoutes(v1, menuSvc, mdlwr)
 	controller.MountOrderRoutes(v1, orderSvc, mdlwr)
 

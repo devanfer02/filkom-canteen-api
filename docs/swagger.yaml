@@ -611,7 +611,7 @@ paths:
       - UserAuth: []
       summary: Fetch All Shops
       tags:
-      - Shops (Admin only)
+      - Shops
     post:
       description: Register Shop to System
       parameters:
@@ -706,7 +706,7 @@ paths:
       - UserAuth: []
       summary: Fetch Shop By ID
       tags:
-      - Shops (Admin and Owner)
+      - Shops
     put:
       description: Update Existing Shop
       parameters:

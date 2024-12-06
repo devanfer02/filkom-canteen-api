@@ -1,6 +1,6 @@
 module github.com/devanfer02/filkom-canteen
 
-go 1.23.3
+go 1.22.9
 
 require (
 	github.com/KyleBanks/depth v1.2.1 // indirect

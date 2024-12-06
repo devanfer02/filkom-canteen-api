@@ -16,17 +16,17 @@ type shopController struct {
 func MountShopRoutes(r *gin.RouterGroup, shopSvc service.IShopService, mdlwr *middleware.Middleware) {
 	shopCtr := &shopController{shopSvc}
 
-	shopR := r.Group("/shops").Use(mdlwr.Authenticate())
-	shopR.GET("", mdlwr.AuthorizeAdmin("Admin"), shopCtr.FetchAllShops)
-	shopR.GET("/:id", mdlwr.AuthorizeAdmin("Admin", "Owner"), shopCtr.FetchShopByID)
-	shopR.POST("", mdlwr.AuthorizeAdmin("Admin"), shopCtr.CreateShop)
-	shopR.POST("/:id/owners/:ownerId", mdlwr.AuthorizeAdmin("Admin"),shopCtr.AssignOwner)
-	shopR.DELETE("/:id/owners/:ownerId", mdlwr.AuthorizeAdmin("Admin"),shopCtr.RemoveOwner)
-	shopR.PUT("/:id", mdlwr.AuthorizeAdmin("Admin", "Owner"), shopCtr.UpdateShop)
-	shopR.DELETE("/:id", mdlwr.AuthorizeAdmin("Admin"), shopCtr.DeleteShop)
+	shopR := r.Group("/shops")
+	shopR.GET("", shopCtr.FetchAllShops)
+	shopR.GET("/:id",  shopCtr.FetchShopByID)
+	shopR.POST("", mdlwr.Authenticate(), mdlwr.AuthorizeAdmin("Admin"), shopCtr.CreateShop)
+	shopR.POST("/:id/owners/:ownerId", mdlwr.Authenticate(), mdlwr.AuthorizeAdmin("Admin"),shopCtr.AssignOwner)
+	shopR.DELETE("/:id/owners/:ownerId", mdlwr.Authenticate(), mdlwr.AuthorizeAdmin("Admin"),shopCtr.RemoveOwner)
+	shopR.PUT("/:id", mdlwr.Authenticate(), mdlwr.AuthorizeAdmin("Admin", "Owner"), shopCtr.UpdateShop)
+	shopR.DELETE("/:id",mdlwr.Authenticate(), mdlwr.AuthorizeAdmin("Admin"), shopCtr.DeleteShop)
 }
 
-//	@Tags			Shops (Admin only)
+//	@Tags			Shops 
 //	@Summary		Fetch All Shops
 //	@Description	Fetch All Shops From Database
 //	@Produce		json
@@ -59,7 +59,7 @@ func (c *shopController) FetchAllShops(ctx *gin.Context) {
 
 }
 
-//	@Tags			Shops (Admin and Owner)
+//	@Tags			Shops 
 //	@Summary		Fetch Shop By ID
 //	@Description	Fetch Shop By ID From DB
 //	@Produce		json

@@ -829,7 +829,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Shops (Admin only)"
+                    "Shops"
                 ],
                 "summary": "Fetch All Shops",
                 "responses": {
@@ -921,7 +921,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Shops (Admin and Owner)"
+                    "Shops"
                 ],
                 "summary": "Fetch Shop By ID",
                 "parameters": [
