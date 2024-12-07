@@ -35,6 +35,11 @@ docker compose up -d
 
 ![img](./public/filkom-canteen(1).png)
 
+## 🗃️ Repositories
+
+- [Golang API Service](https://github.com/devanfer02/filkom-canteen-api)
+- [PHP Auth API Service](https://github.com/devanfer02/filkom-canteen-auth)
+
 ## 🛠️ Tech Stacks
 
 <table border="1">
