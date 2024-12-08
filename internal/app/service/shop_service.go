@@ -87,7 +87,19 @@ func (s *shopServiceImpl) RemoveOwner(req *dto.ShopParams) error {
 }
 
 func (s *shopServiceImpl) UpdateShop(params *dto.ShopParams, req *dto.ShopRequest) error {
-	err := s.shopRepo.UpdateShop(params, &domain.Shop{
+	decoded, err := enc.Decode(params.ID)
+
+	if err != nil {
+		return domain.ErrBadRequest
+	}
+
+	params.ID = decoded
+
+	if _, err := uuid.Parse(params.ID); err != nil {
+		return domain.ErrBadRequest
+	}
+
+	err = s.shopRepo.UpdateShop(params, &domain.Shop{
 		Name:        req.Name,
 		Description: req.Description,
 	})

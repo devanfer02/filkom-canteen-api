@@ -87,8 +87,20 @@ func (s *menuServiceImpl) CreateMenu(params *dto.MenuParams, req *dto.MenuReques
 }
 
 func (s *menuServiceImpl) UpdateMenu(params *dto.MenuParams, req *dto.MenuRequest) error {
+	decoded, err := enc.Decode(params.ID)
 
-	err := s.menuRepo.UpdateMenu(params, &domain.Menu{
+	if err != nil {
+		return domain.ErrBadRequest
+	}
+
+	params.ID = decoded
+
+	if _, err := uuid.Parse(params.ID); err != nil {
+		return domain.ErrBadRequest
+	}
+
+
+	err = s.menuRepo.UpdateMenu(params, &domain.Menu{
 		Name:   req.Name,
 		ShopID: req.ShopID,
 		Price:  req.Price,

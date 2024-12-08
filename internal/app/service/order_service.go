@@ -82,8 +82,20 @@ func (s *orderServiceImpl) CreateOrder(params *dto.OrderParams, req *dto.OrderRe
 }
 
 func (s *orderServiceImpl) UpdateOrder(params *dto.OrderParams, req *dto.OrderRequest) error {
+	decoded, err := enc.Decode(params.ID)
 
-	err := s.orderRepo.UpdateOrder(params, &domain.Order{
+	if err != nil {
+		return domain.ErrBadRequest
+	}
+
+	params.ID = decoded
+
+	if _, err := uuid.Parse(params.ID); err != nil {
+		return domain.ErrBadRequest
+	}
+
+
+	err = s.orderRepo.UpdateOrder(params, &domain.Order{
 		Status:           req.Status,
 		PaymentMethod:    req.PaymentMethod,
 		PaymentProofLink: "",

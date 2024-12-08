@@ -88,7 +88,7 @@ func (s *ownerServiceImpl) UpdateOwner(params *dto.OwnerParams, req *dto.OwnerRe
 		WANumber: req.WANumber,
 	})
 
-	return nil
+	return err 
 }
 
 func (s *ownerServiceImpl) DeleteOwner(params *dto.OwnerParams) error {
