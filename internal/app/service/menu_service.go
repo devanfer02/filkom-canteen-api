@@ -5,7 +5,6 @@ import (
 	"github.com/devanfer02/filkom-canteen/internal/app/repository"
 	"github.com/devanfer02/filkom-canteen/internal/dto"
 	enc "github.com/devanfer02/filkom-canteen/internal/pkg/encoder"
-	"github.com/devanfer02/filkom-canteen/internal/pkg/log"
 	"github.com/google/uuid"
 )
 
@@ -62,10 +61,6 @@ func (s *menuServiceImpl) FetchMenuByID(params *dto.MenuParams) (*domain.Menu, e
 	menu.ID = enc.Encode(menu.ID) 
 	menu.ShopID = enc.Encode(menu.ShopID)
 
-	log.Info(log.LogInfo{
-		"LTE": menu.ID,
-	}, "OK")
-
 	return menu, err
 }
 
@@ -75,6 +70,7 @@ func (s *menuServiceImpl) CreateMenu(params *dto.MenuParams, req *dto.MenuReques
 	if err != nil {
 		return domain.ErrBadRequest
 	}
+
 
 	err = s.menuRepo.InsertMenu(&domain.Menu{
 		Name:   req.Name,

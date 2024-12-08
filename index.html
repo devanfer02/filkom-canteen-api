@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+<script>
+    async function createMenu() {
+        try {
+            const res = await fetch('http://localhost:5700/api/v1/menus', {
+            method: 'POST',
+            headers: {
+                
+            },
+            body: JSON.stringify({
+                "menu_name": "Katsu BBQ",
+                "shop_id": "MDE5M2E1MDAtODcyMi1jM2UzLWMwMmEtMzBhOTk5YzIyOGEw",
+                "menu_price": 13000,
+                "menu_status": "Ada"
+            })
+        })
+
+        const data = await res.json()
+
+        console.log(data)
+        } catch (err) {
+            console.error(err)
+        }
+        
+    }
+
+    createMenu()
+</script>
+
+</html>

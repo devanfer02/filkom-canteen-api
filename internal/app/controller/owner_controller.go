@@ -17,11 +17,11 @@ func MountOwnerRoutes(r *gin.RouterGroup, ownerSvc service.IOwnerService, mdlwr 
 	ownerCtr := &ownerController{ownerSvc}
 	ownerR := r.Group("/owners")
 
-	ownerR.GET("", mdlwr.Authenticate(),mdlwr.AuthorizeAdmin("Admin"), ownerCtr.FetchAll)
-	ownerR.GET("/:id", mdlwr.Authenticate(),mdlwr.AuthorizeAdmin("Admin", "Owner"), ownerCtr.FetchByID)
-	ownerR.POST("", mdlwr.Authenticate(),mdlwr.AuthorizeAdmin("Admin"),ownerCtr.RegisterOwner)
-	ownerR.PUT("/:id", mdlwr.Authenticate(),mdlwr.AuthorizeAdmin("Admin", "Owner"), ownerCtr.UpdateOwner)
-	ownerR.DELETE("/:id", mdlwr.Authenticate(),mdlwr.AuthorizeAdmin("Admin"), ownerCtr.DeleteOwner)
+	ownerR.GET("", mdlwr.Authenticate(), mdlwr.AuthorizeAdmin("Admin"), ownerCtr.FetchAll)
+	ownerR.GET("/:id", mdlwr.Authenticate(), mdlwr.AuthorizeAdmin("Admin", "Owner"), ownerCtr.FetchByID)
+	ownerR.POST("", mdlwr.Authenticate(), mdlwr.AuthorizeAdmin("Admin"), ownerCtr.RegisterOwner)
+	ownerR.PUT("/:id", mdlwr.Authenticate(), mdlwr.AuthorizeAdmin("Admin", "Owner"), ownerCtr.UpdateOwner)
+	ownerR.DELETE("/:id", mdlwr.Authenticate(), mdlwr.AuthorizeAdmin("Admin"), ownerCtr.DeleteOwner)
 }
 
 // @Tags			Owners
@@ -112,7 +112,7 @@ func (c *ownerController) RegisterOwner(ctx *gin.Context) {
 		ginlib.SendResponse(ctx, code, status, message, nil, err)
 	}()
 
-	if err = ctx.ShouldBind(&owner); err != nil {
+	if err = ctx.ShouldBindJSON(&owner); err != nil {
 		code, status = domain.GetStatus(err)
 		return
 	}
@@ -154,7 +154,7 @@ func (c *ownerController) UpdateOwner(ctx *gin.Context) {
 		ginlib.SendResponse(ctx, code, status, message, nil, err)
 	}()
 
-	if err = ctx.ShouldBind(&owner); err != nil {
+	if err = ctx.ShouldBindJSON(&owner); err != nil {
 		code, status = domain.GetStatus(err)
 		return
 	}
