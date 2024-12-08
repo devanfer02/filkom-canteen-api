@@ -56,18 +56,6 @@ func (m *Middleware) Authenticate() gin.HandlerFunc {
 			return
 		}
 
-		val, err := m.redis.Get(ctx.Request.Context(), tokenString)
-
-		if err != nil {
-			err = errors.New("token expired")
-			return
-		}
-
-		if val != "" {
-			err = errors.New("token expired")
-			return
-		}
-
 		if _, err = uuid.Parse(issuer.UserID); err != nil {
 			err = errors.New("failed to authenticate")
 			return 
