@@ -111,7 +111,19 @@ func (s *menuServiceImpl) UpdateMenu(params *dto.MenuParams, req *dto.MenuReques
 }
 
 func (s *menuServiceImpl) DeleteMenu(params *dto.MenuParams) error {
-	err := s.menuRepo.DeleteMenu(params)
+	decoded, err := enc.Decode(params.ID)
+
+	if err != nil {
+		return domain.ErrBadRequest
+	}
+
+	params.ID = decoded
+
+	if _, err := uuid.Parse(params.ID); err != nil {
+		return domain.ErrBadRequest
+	}
+
+	err = s.menuRepo.DeleteMenu(params)
 
 	return err
 }

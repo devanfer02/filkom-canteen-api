@@ -105,7 +105,19 @@ func (s *orderServiceImpl) UpdateOrder(params *dto.OrderParams, req *dto.OrderRe
 }
 
 func (s *orderServiceImpl) DeleteOrder(params *dto.OrderParams) error {
-	err := s.orderRepo.DeleteOrder(params)
+	decoded, err := enc.Decode(params.ID)
+
+	if err != nil {
+		return domain.ErrBadRequest
+	}
+
+	params.ID = decoded
+
+	if _, err := uuid.Parse(params.ID); err != nil {
+		return domain.ErrBadRequest
+	}
+
+	err = s.orderRepo.DeleteOrder(params)
 
 	return err
 }

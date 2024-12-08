@@ -108,7 +108,19 @@ func (s *shopServiceImpl) UpdateShop(params *dto.ShopParams, req *dto.ShopReques
 }
 
 func (s *shopServiceImpl) DeleteShop(params *dto.ShopParams) error {
-	err := s.shopRepo.DeleteShop(params)
+	decoded, err := enc.Decode(params.ID)
+
+	if err != nil {
+		return domain.ErrBadRequest
+	}
+
+	params.ID = decoded
+
+	if _, err := uuid.Parse(params.ID); err != nil {
+		return domain.ErrBadRequest
+	}
+
+	err = s.shopRepo.DeleteShop(params)
 
 	return err
 }
