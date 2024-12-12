@@ -120,7 +120,7 @@ func (c *orderController) CreateOrder(ctx *gin.Context) {
 	var (
 		code    = 500
 		status  = "fail"
-		message = "failed to fetch order"
+		message = "failed to create order"
 		order   dto.OrderRequest
 		err     error
 		userId  = ctx.GetString("id")
